@@ -1,21 +1,27 @@
 
 function App() {
+
+
+    const KEY = process.env.REACT_APP_API_KEY
+    
+
+  const fetchData = async () => {
+    try {
+      const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=pasta&maxFat=25&number=2`
+      )
+      const result = await data.json()
+      console.log(result)
+    } catch (error) {
+      console.log(error)
+    }
+  
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <button onClick={fetchData}>DON'T CLICK ME UNLESS YOU NEED TO </button>
+      
+      
     </div>
   );
 }
