@@ -1,6 +1,10 @@
 
-function App() {
+import Search from './components/search'
+import SideBar from './components/sideBar'
+import './style/App.css'
 
+
+function App() {
 
     const KEY = process.env.REACT_APP_API_KEY
     
@@ -19,8 +23,10 @@ function App() {
   return (
     <div className="App">
 
-      <button onClick={fetchData}>DON'T CLICK ME UNLESS YOU NEED TO </button>
-      
+
+      <SideBar></SideBar>
+      <Search></Search>
+  
       
     </div>
   );

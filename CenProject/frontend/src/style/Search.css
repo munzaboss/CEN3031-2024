@@ -1,0 +1,22 @@
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    text-align: center;
+    padding: 10px;
+}
+
+.Search {
+    height: 100vh;
+    width: 100%;
+    border: 1px solid red;
+}
+
+.webTitle {
+    text-align: center;
+    padding: 2px;
+}
+
