@@ -9,10 +9,11 @@ p {
     padding: 10px;
 }
 
-.Search {
+
+.container {
     height: 100vh;
     width: 100%;
-    border: 1px solid red;
+    background-color: aliceblue;
 }
 
 .webTitle {
@@ -20,3 +21,50 @@ p {
     padding: 2px;
 }
 
+.searchBar {
+    text-align: center;
+    width: 500px;
+    height: 40px;
+    border-radius: 20px;
+    font-size: large;
+    margin-top:5px;
+}
+
+
+.containerForSearchBar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+.customAccordion {
+    max-width: 300px;
+    max-height: 40px;
+}
+
+.button-dropDown-container {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.cardsContainer {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 30px;
+    margin: 200px;
+
+    justify-content: space-evenly;
+    justify-items: center;
+    align-content: space-evenly;
+    align-items: center;
+
+}
+
+.submitButton {
+    border-radius: 20px;
+    height: 40px;
+    width: 80px;
+    margin-top:5px;
+}

@@ -1,7 +1,9 @@
+
+
 .SideBar {
     height: 100vh;
     min-width: 30%;
-    border: 1px solid green;
     text-align: center;
+    border-right: 1px solid black;
     padding: 10px;
 }
