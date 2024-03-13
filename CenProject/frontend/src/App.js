@@ -1,18 +1,26 @@
-
+import React from 'react';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'; //stores location in browser's address bar using URLs
+import FoodCard from './components/FoodCard';
+import FoodInfo from './components/FoodInfo';
 import Search from './components/search'
 import SideBar from './components/sideBar'
 import './style/App.css'
 import 'bootstrap/dist/css/bootstrap.css';
 
-
-function App() {
-
-  return (
-    <div className="App">
-      <SideBar></SideBar>
-      <Search></Search>
-    </div>
-  );
-}
+//Referenced tutorial: https://www.geeksforgeeks.org/reactjs-router/ 
+const App = () =>{
+    return (
+      <Router>
+        <div className="App">
+        <Routes>
+          <Route path="/" element={<Search/>}></Route>
+          <Route path="/" element={<SideBar/>}></Route>
+          <Route path="/" element={<FoodCard/>}></Route>
+          <Route path="/" element={<FoodInfo/>}></Route>
+        </Routes>
+      </div>
+      </Router>
+    );
+  }
 
 export default App;
