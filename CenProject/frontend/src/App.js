@@ -1,11 +1,14 @@
-import React from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'; //stores location in browser's address bar using URLs
-import FoodCard from './components/FoodCard';
-import FoodInfo from './components/FoodInfo';
+
+
 import Search from './components/search';
 import SideBar from './components/sideBar';
-import './style/App.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import FoodCard from './components/FoodCard';
+import FoodInfo from './components/FoodInfo';
+import Login from './components/Login';
+import './style/App.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { Fragment } from 'react'
 
 //Referenced tutorial: https://www.geeksforgeeks.org/reactjs-router/ 
 const App = () =>{
