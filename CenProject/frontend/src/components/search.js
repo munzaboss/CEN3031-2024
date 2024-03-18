@@ -1,7 +1,9 @@
 import "../style/Search.css"
 import {useState} from "react"
+import {Link} from 'react-router-dom'
 import FoodCard from "./FoodCard.js"
 import Accordion from 'react-bootstrap/Accordion';
+
 
 
 
@@ -62,7 +64,9 @@ const Search = () => {
             <h1 className="webTitle">
                 Recipe Finder 
             </h1>
-            
+
+            <Link to="/geoGuesser">Go To Web</Link>
+
             <p>This is where the user will search up the food</p>
 
             {/*for the entire search bar row*/}
