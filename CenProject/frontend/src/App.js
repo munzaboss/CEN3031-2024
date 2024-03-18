@@ -10,16 +10,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 //Referenced tutorial: https://www.geeksforgeeks.org/reactjs-router/ 
 const App = () =>{
     return (
-      <Router>
         <div className="App">
-          <SideBar /> /* Rendered outside the router so it appears on every page instead of just the homepage */
-        <Routes>
-          <Route path="/" element={<Search/>}></Route>
-          <Route path="/" element={<FoodCard/>}></Route>
-          <Route path="/" element={<FoodInfo/>}></Route>
-        </Routes>
-      </div>
-      </Router>
+          <SideBar /> 
+          <Search></Search>
+          {/* <Route path="/" element={Search} />
+          <Route path="/" element={FoodCard} />
+          <Route path="/" element={FoodInfo} /> */}
+        </div>
     );
   }
 
