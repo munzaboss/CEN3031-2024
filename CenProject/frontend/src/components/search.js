@@ -27,14 +27,12 @@ const Search = () => {
 
     /*fetches the API data*/ 
     const formQuery = (string) => {
-        let query = string.replaceAll(" ", "+")
+        let query = encodeURIComponent(string.replaceAll(" ", "+")); //encodeURIComponent - special characters in a query string are correctly encoded for using in an URL
         if (checked.length > 0)  {
-            let parameters = checked.reduce( (prev, cur) => {
-                return prev + cur
-            })
-            return query + parameters
+            let parameters = checked.map(() => '&${param}').join(''); //map function used to map over each element in the checked array and append an '&' character before the parameter to ensure a well formed query 
+            return query + parameters;  //join function above to concatenate the above parameters into 1 string
         }
-        return query
+        return query;
     }
 
     /*fetches the API data*/ 
@@ -79,9 +77,15 @@ const Search = () => {
 
                             <table>
                             <tb>
-                                <tr><input type="checkbox" value="&maxSugar=25" onChange={handleCheckBox}/> Low Sugar</tr>
-                                <tr><input type="checkbox" value="&maxFat=25" onChange={handleCheckBox}/> Low Fat</tr>
+                                <tr><input type="checkbox" value="&maxSugar=25" onChange={handleCheckBox}/> Sugar Free</tr>
+                                <tr><input type="checkbox" value="&maxFat=25" onChange={handleCheckBox}/> Fat Free</tr>
                                 <tr><input type="checkbox" value="&maxCarb=25" onChange={handleCheckBox}/> Low Carbs</tr>
+                                <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/>Most Ingredients Used</tr>
+                                <tr><input type="checkbox" value="&onlyVegetarian=25" onChange={handleCheckBox}/>Vegetarian</tr>
+                                <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/>Has Common Allergens</tr>
+                                <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/>Least Cooking Time</tr>
+                                <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/>Least Preparation Time</tr>
+                                <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/>Type of Cuisine</tr>
                             </tb>
                             </table>
 

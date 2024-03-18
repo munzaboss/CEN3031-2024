@@ -1,0 +1,24 @@
+/* Need to revisit, understand, and modify */
+.dropbtn{
+    background-color: lightgray;
+}
+.customAccordion{
+    background-color:aquamarine;
+    width: 100%;
+    margin-top: 20px;
+}
+.customAccordion table{
+    width: 100%;
+    margin-top: 10px;
+}
+.customAccordion tr{
+    border: 1px solid black;
+}
+.customAccordion .accordion-body{
+    background-color:beige;
+    padding: 10px;
+}
+.customAccordion input[type="checkbox"]{
+    background-color: gray;
+
+}
