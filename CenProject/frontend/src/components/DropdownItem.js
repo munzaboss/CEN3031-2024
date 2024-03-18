@@ -1,5 +1,5 @@
 import Accordion from 'react-bootstrap/Accordion';
-import '../style/DropdownItem.css';
+import '../style/DropdownItem.html';
 
 function DropdownMenu({bool}) {
     return (

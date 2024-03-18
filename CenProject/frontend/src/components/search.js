@@ -25,14 +25,12 @@ const Search = () => {
 
     /*fetches the API data*/ 
     const formQuery = (string) => {
-        let query = string.replaceAll(" ", "+")
+        let query = encodeURIComponent(string.replaceAll(" ", "+")); //encodeURIComponent - special characters in a query string are correctly encoded for using in an URL
         if (checked.length > 0)  {
-            let parameters = checked.reduce( (prev, cur) => {
-                return prev + cur
-            })
-            return query + parameters
+            let parameters = checked.map(() => '&${param}').join(''); //map function used to map over each element in the checked array and append an '&' character before the parameter to ensure a well formed query 
+            return query + parameters;  //join function above to concatenate the above parameters into 1 string
         }
-        return query
+        return query;
     }
 
     /*fetches the API data*/ 
