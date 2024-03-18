@@ -1,7 +1,9 @@
 import "../style/Search.css"
 import {useState} from "react"
+import {Link} from 'react-router-dom'
 import FoodCard from "./FoodCard.js"
 import Accordion from 'react-bootstrap/Accordion';
+
 
 
 
@@ -25,14 +27,12 @@ const Search = () => {
 
     /*fetches the API data*/ 
     const formQuery = (string) => {
-        let query = string.replaceAll(" ", "+")
+        let query = encodeURIComponent(string.replaceAll(" ", "+")); //encodeURIComponent - special characters in a query string are correctly encoded for using in an URL
         if (checked.length > 0)  {
-            let parameters = checked.reduce( (prev, cur) => {
-                return prev + cur
-            })
-            return query + parameters
+            let parameters = checked.map(() => '&${param}').join(''); //map function used to map over each element in the checked array and append an '&' character before the parameter to ensure a well formed query 
+            return query + parameters;  //join function above to concatenate the above parameters into 1 string
         }
-        return query
+        return query;
     }
 
     /*fetches the API data*/ 
@@ -62,7 +62,9 @@ const Search = () => {
             <h1 className="webTitle">
                 Recipe Finder 
             </h1>
-            
+
+            <Link to="/geoGuesser">Go To Web</Link>
+
             <p>This is where the user will search up the food</p>
 
             {/*for the entire search bar row*/}

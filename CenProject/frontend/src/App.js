@@ -1,7 +1,10 @@
 
-import Search from './components/search'
-import SideBar from './components/sideBar'
-import Login from './components/Login'
+
+import Search from './components/search';
+import SideBar from './components/sideBar';
+import FoodCard from './components/FoodCard';
+import FoodInfo from './components/FoodInfo';
+import Login from './components/Login';
 import './style/App.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
@@ -13,6 +16,8 @@ function HomePage() {
     <>
       <SideBar/>
       <Search/>
+      <FoodCard/>
+      <FoodInfo/>
     </>
   );
 }
