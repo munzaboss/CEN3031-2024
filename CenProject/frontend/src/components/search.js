@@ -42,12 +42,6 @@ const Search = () => {
         try {
             const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=10`)
             const object = await data.json()
-
-            // const arr = []
-            // object.results.forEach( (obj) => {
-            //     arr.push(obj.image)
-            // })
-
             setCards(object.results)
             console.log(object)
           } catch (error) {
@@ -108,7 +102,7 @@ const Search = () => {
             <div className="cardsContainer">
                     {cards.map((obj, key) => {
                         return (
-                            <FoodCard key={key} img={obj.image} title={obj.title}></FoodCard>
+                            <FoodCard key={key} img={obj.image} title={obj.title} linkToPage={obj.link}></FoodCard>
                         )
                 })}
             </div> 
