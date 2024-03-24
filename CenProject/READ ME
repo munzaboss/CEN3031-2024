@@ -2,15 +2,4 @@ How to set up Project.
 
 As the project goes on, we will install more frameworks/dependices. This read me file should be up to date with all of them! 
 
-Make sure to have node installed in order to run these commands 
-
-Frontend: 
-
-  npm i --save-dev dotenv (this is for the env file) 
-  npm install react-router-dom
-
-Backend: 
-
-  npm i cors express nodemon 
-
 
