@@ -17,7 +17,6 @@ const App = () =>{
         </div> 
       </div>
      
-     
     );
   }
 

@@ -18,9 +18,9 @@ const NavBar = () => {
 
       <div className="nav-links">
        
-        <span><Link className="nav-link-style">Home</Link></span>
-        <span><Link className="nav-link-style">My Recipies</Link></span>
-        <span><Link className="nav-link-style">GeoGuesser Food</Link></span>
+        <span><Link to="/" className="nav-link-style">Home</Link></span>
+        <span><Link to="/myRecipes" className="nav-link-style">My Recipies</Link></span>
+        <span><Link to="/geoGuesser" className="nav-link-style">GeoGuesser Food</Link></span>
       </div>
 
 
