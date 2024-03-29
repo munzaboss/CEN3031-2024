@@ -1,5 +1,6 @@
 import React from 'react';
 import "../style/GeoGuesser.css"
+import NavBar from "./NavBar"
 import { useState, useEffect } from 'react';
 import { GoogleMap, useLoadScript, Marker, Polyline } from '@react-google-maps/api';
 
@@ -91,6 +92,11 @@ const GeoGuesser = () => {
   }
 
   return (
+
+    <div>
+
+      <NavBar/>
+
     <div className="geoGuesserContainer">
 
       <div className="questionsSideBar">
@@ -136,6 +142,9 @@ const GeoGuesser = () => {
       {/* <div className="mainMap">Yoo</div> */}
 
     </div>
+
+    </div>
+
    
   );
 };
