@@ -2,6 +2,7 @@ import "../style/Search.css"
 import {useState, useEffect} from "react"
 import {Link} from 'react-router-dom'
 import FoodCard from "./FoodCard.js"
+import SideBar from "./sideBar.js";
 import Accordion from 'react-bootstrap/Accordion';
 
 
@@ -14,6 +15,13 @@ const Search = () => {
     const [text, setText] = useState("")
     const [checked, setChecked] = useState([])
     const [cards, setCards] = useState([])
+    //states that deal with saving of recipes
+    const [savedRecipes, setSavedRecipes] = useState([])
+    //function to save more and more recipes given a previous recipe has been saved
+    //passed down to other file as a property
+    const saveRecipe = (recipe) => {
+        setSavedRecipes((prevRecipes) => [...prevRecipes, recipe]);
+    };
 
     /*handles clicks for the check box*/
     const handleCheckBox = (e) => {
@@ -105,20 +113,21 @@ const Search = () => {
                 />
 
                 {/*submit button*/}
-                <button className="submitButton"onClick={fetchData}>submit</button>
+                <button className="submitButton"onClick={fetchData}>Submit</button>
             </div>  
 
             {/*displays the cards*/}
             <div className="cardsContainer">
                     {cards.map((obj, key) => {
                         return (
-                            <FoodCard key={key} img={obj.image} title={obj.title} linkToPage={obj.links}></FoodCard>
+                            <FoodCard key={key} img={obj.image} title={obj.title} linkToPage={obj.links} saveRecipe={saveRecipe}></FoodCard>
                         )
                 })}
             </div>
-
+            <SideBar savedRecipes={savedRecipes}/>
         </div>
     )
 }
-
+//<SideBar savedRecipes={savedRecipes}/> - rendering of savedRecipes component 
 export default Search
+
