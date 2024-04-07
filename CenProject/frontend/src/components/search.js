@@ -1,7 +1,9 @@
 import "../style/Search.css"
-import {useState} from "react"
+import {useState, useEffect} from "react"
+import {Link} from 'react-router-dom'
 import FoodCard from "./FoodCard.js"
 import Accordion from 'react-bootstrap/Accordion';
+
 
 
 
@@ -13,7 +15,6 @@ const Search = () => {
     const [checked, setChecked] = useState([])
     const [cards, setCards] = useState([])
 
-    
     /*handles clicks for the check box*/
     const handleCheckBox = (e) => {
         if (e.target.checked) {
@@ -33,25 +34,32 @@ const Search = () => {
         return query;
     }
 
+    const urls = () => {
+        console.log("hell")
+        console.log(cards[0].links)
+    }
+
     /*fetches the API data*/ 
     const fetchData = async () => {
         const query = formQuery(text)
-        console.log(query)
+
         try {
             const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=10`)
             const object = await data.json()
 
-            // const arr = []
-            // object.results.forEach( (obj) => {
-            //     arr.push(obj.image)
-            // })
-
+            await Promise.all(object.results.map(async(obj, idx) => {
+                const links = await fetch(`https://api.spoonacular.com/recipes/${obj.id}/information?apiKey=${KEY}&includeNutrition=false`)
+                const resLinks = await links.json()
+                obj.links = resLinks.spoonacularSourceUrl
+                return obj
+            }))
+            
+            console.log(object.results)
             setCards(object.results)
-            console.log(object)
           } catch (error) {
             console.log(error)
           }
-    }
+}
 
 
     return (
@@ -60,7 +68,7 @@ const Search = () => {
             <h1 className="webTitle">
                 Recipe Finder 
             </h1>
-            
+
             <p>This is where the user will search up the food</p>
 
             {/*for the entire search bar row*/}
@@ -98,16 +106,16 @@ const Search = () => {
 
                 {/*submit button*/}
                 <button className="submitButton"onClick={fetchData}>submit</button>
-            </div>
+            </div>  
 
             {/*displays the cards*/}
             <div className="cardsContainer">
                     {cards.map((obj, key) => {
                         return (
-                            <FoodCard key={key} img={obj.image} title={obj.title}></FoodCard>
+                            <FoodCard key={key} img={obj.image} title={obj.title} linkToPage={obj.links}></FoodCard>
                         )
                 })}
-            </div> 
+            </div>
 
         </div>
     )
