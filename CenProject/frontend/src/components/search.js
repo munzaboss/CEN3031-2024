@@ -74,7 +74,6 @@ const Search = () => {
                     <Accordion.Item eventKey="0">
                         <Accordion.Header> Filter </Accordion.Header>
                         <Accordion.Body>
-
                             <table>
                             <tb>
                                 <tr><input type="checkbox" value="&maxSugar=25" onChange={handleCheckBox}/> Sugar Free</tr>
