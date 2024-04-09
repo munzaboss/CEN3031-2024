@@ -11,7 +11,7 @@ const UserRecipeCard = (props) => {
     const [editable, setEditable] = useState(false)
 
     return(
-        <div className="recipe-child d-flex flex-row">
+        <div className={`recipe-child d-flex flex-row ${editable ? 'border border-danger' : null}`}>
                 <div className="recipe-image w-25">
                     <img className="w-100 h-100 recipe-img" src={props.URL}></img>
                 </div>
