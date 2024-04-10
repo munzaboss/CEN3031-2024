@@ -36,15 +36,11 @@ const Search = () => {
     const formQuery = (string) => {
         let query = encodeURIComponent(string.replaceAll(" ", "+")); //encodeURIComponent - special characters in a query string are correctly encoded for using in an URL
         if (checked.length > 0)  {
-            let parameters = checked.map(() => '&${param}').join(''); //map function used to map over each element in the checked array and append an '&' character before the parameter to ensure a well formed query 
+            let parameters = checked.map((param) => `${param}`).join(''); //map function used to map over each element in the checked array and append an '&' character before the parameter to ensure a well formed query 
+            console.log(parameters)
             return query + parameters;  //join function above to concatenate the above parameters into 1 string
         }
         return query;
-    }
-
-    const urls = () => {
-        console.log("hell")
-        console.log(cards[0].links)
     }
 
     /*fetches the API data*/ 
@@ -52,7 +48,7 @@ const Search = () => {
         const query = formQuery(text)
 
         try {
-            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=10`)
+            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=1`)
             const object = await data.json()
 
             await Promise.all(object.results.map(async(obj, idx) => {
@@ -86,18 +82,17 @@ const Search = () => {
                     <Accordion.Item eventKey="0">
                         <Accordion.Header> Filter </Accordion.Header>
                         <Accordion.Body>
-
                             <table>
                             <tb>
                                 <tr><input type="checkbox" value="&maxSugar=25" onChange={handleCheckBox}/> Sugar Free</tr>
                                 <tr><input type="checkbox" value="&maxFat=25" onChange={handleCheckBox}/> Fat Free</tr>
                                 <tr><input type="checkbox" value="&maxCarb=25" onChange={handleCheckBox}/> Low Carbs</tr>
-                                <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/>Most Ingredients Used</tr>
-                                <tr><input type="checkbox" value="&onlyVegetarian=25" onChange={handleCheckBox}/>Vegetarian</tr>
-                                <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/>Has Common Allergens</tr>
-                                <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/>Least Cooking Time</tr>
-                                <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/>Least Preparation Time</tr>
-                                <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/>Type of Cuisine</tr>
+                                <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/> Most Ingredients Used</tr>
+                                <tr><input type="checkbox" value="&diet=vegetarian" onChange={handleCheckBox}/> Vegetarian</tr>
+                                <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/> Has Common Allergens</tr>
+                                <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/> Least Cooking Time</tr>
+                                <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/> Least Preparation Time</tr>
+                                <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/> Type of Cuisine</tr>
                             </tb>
                             </table>
 

@@ -2,14 +2,14 @@
     display: flex;
     flex-direction: column;
     padding: 0rem 2rem;
-    background-color:aquamarine;
+    background-color: aquamarine;
 }
 
 .recipe-child { 
     height: 25rem;
     width: 100%;
     margin-top: 3rem;
-    border: 2px solid black;
+    /* border: 2px solid black; */
     border-radius: 2%;
     transition: box-shadow 300ms ease-in-out;
 }
@@ -20,7 +20,20 @@
 
 .recipe-child:hover {
     box-shadow: 2px 2px 10px;
-    border: 2px solid purple;
-    transition: border 300ms ease-in-out;
+}
 
+.searchBar {
+    text-align: center;
+    width: 500px;
+    height: 40px;
+    border-radius: 20px;
+    font-size: large;
+    margin-top: 5px;
+}
+
+.submitButton {
+    border-radius: 20px;
+    height: 40px;
+    width: 80px;
+    margin-top: 5px;
 }
