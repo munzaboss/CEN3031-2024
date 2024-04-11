@@ -8,6 +8,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Login from './components/Login';
 
 
 const router = createBrowserRouter([
@@ -20,8 +21,13 @@ const router = createBrowserRouter([
     element: <GeoGuesser/>
   },
   {
+    path: 'login',
+    element: <Login/>
+  },
+  {
     path:"myRecipes",
     element: <MyRecipes/>
+
   }
   
 ]);
