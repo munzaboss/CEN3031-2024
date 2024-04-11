@@ -53,12 +53,14 @@ const GeoGuesser = () => {
 
   //set up state variables 
   const [answerCoordinates, setAnswerCoordinates] = useState([{lat: 37.090240,lng: -95.712891 }])
-  const [recipeTitle, setRecipeTitle] = useState("Peppermint White Chocolate Fudge")
-  const [recipeDescription, setRecipeDescription] = useState("Madeleines With Irish Whiskey Fudge takes about 45 minutes from beginning to end. This dessert has 584 calories, 8g of protein, and 30g of fat per serving. For $1.18 per serving, this recipe covers 10% of your daily requirements of vitamins and minerals. This recipe serves 4. 3 people have tried and liked this recipe. It is a budget friendly recipe for fans of European food. st. patrick day will be even more special with this recipe. This recipe from Foodista requires irish whiskey fudge, coffee powder, baking powder, and cream. With a spoonacular score of 27%, this dish is not so tremendous. Similar recipes include Irish Whiskey Soda Bread with Irish Whiskey Butter, Irish Apple Cake with Irish Whiskey Caramel Sauce, and ‘Irish Coffee’ Cake with Irish")
-  const [recipeImage, setRecipeImage] = useState("https://img.spoonacular.com/recipes/648501-556x370.jpg")
+  const [recipeTitle, setRecipeTitle] = useState("")
+  const [recipeDescription, setRecipeDescription] = useState("")
+  const [recipeImage, setRecipeImage] = useState("")
   const [marker, setMarker] = useState([])
   const [path, setPath] = useState([])
   const [revealAnswer, setAnswer] = useState(false)
+  const [revealUserMarker, setUserMarker] = useState(false)
+  const [error, setError] = useState(false)
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: KEY,
     libraries,
@@ -68,36 +70,42 @@ const GeoGuesser = () => {
   const getNewRecipe = async () => {
 
     setAnswer(false)
-    setMarker([
-      {
-        lat: 0,
-        lng: 0
-      }
-    ])
+    setUserMarker(false)
+  
     const origin = CUISINES[Math.floor(Math.random()*CUISINES.length)]
 
     //get random recipe based on a random origin 
     const data = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${KEY2}&number=1&include-tags=cuisine=${origin[0]}`)
     const results = await data.json()
 
-    // sets the basic recipe information 
-    setRecipeTitle(results.recipes[0].title)
-    setRecipeDescription(results.recipes[0].summary)
-    setRecipeImage(results.recipes[0].image)
+    //try to set data from all API calls 
+    try {
+      // sets the basic recipe information 
+      setRecipeTitle(results.recipes[0].title)
+      setRecipeDescription(results.recipes[0].summary)
+      setRecipeImage(results.recipes[0].image)
 
-    //gets the lat and lng of the origin 
-    const originData = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${origin[1]}&key=${KEY}`)
-    const originResults = await originData.json()
-    const res = originResults.results[0].geometry.location
+      //gets the lat and lng of the origin 
+      const originData = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${origin[1]}&key=${KEY}`)
+      const originResults = await originData.json()
+      const res = originResults.results[0].geometry.location
     
-    setAnswerCoordinates(res)
+      setAnswerCoordinates(res)
+      setError(false)
+    }
 
+    catch(error) {
+      console.log(error)
+      setError(true)
+    }
+    
   }
 
   //when user clicks map, it places their marker on the map
   //only works if the answer is not revealed   
   const onMapClick = (e) => {
 
+    setUserMarker(true)
     if (!revealAnswer) {
       setMarker([
         {
@@ -147,13 +155,24 @@ const GeoGuesser = () => {
          
 
           {/* shows the recipe info */}
-          <div className="d-flex flex-column justify-content-center align-items-center position-relative">
-            <h3 className="mt-5 px-2">{recipeTitle}</h3>
-            <div style={{height: "320px", width:"100%"}} className="overflowY">
-              <p className=" mt-5" dangerouslySetInnerHTML={{ __html: recipeDescription}}></p>
+          { !error ?  (
+              <div className="d-flex flex-column justify-content-center align-items-center position-relative">
+                <h3 className="mt-5 px-2 text-center">{recipeTitle}</h3>
+                <div style={{height: "320px", width:"100%"}} className="overflowY">
+                  <p className=" mt-5" dangerouslySetInnerHTML={{ __html: recipeDescription}}></p>
+                </div>
+                <img className="img-responsive mt-5 position-absolute bottom-0 top-100" src={recipeImage}></img>
             </div>
-            <img className="img-responsive mt-5 position-absolute bottom-0 top-100" src={recipeImage}></img>
-          </div>
+          ) : (
+              <div className="d-flex flex-column justify-content-center align-items-center position-relative">
+                <h3 className="mt-5 px-2">Error! Wait a second and try again!</h3>
+              </div>
+
+          )
+          
+          
+          }
+        
       </div>
 
       {/* right side of the screen - the actual map */}
@@ -166,14 +185,21 @@ const GeoGuesser = () => {
         >
 
         {/* places the user marker on the map */}
-        {marker.map((marker, index) => (
-          <Marker 
-            key={index}
-            position={{ 
-              lat: marker.lat,
-              lng: marker.lng 
-            }} />
-        ))}
+
+
+        {revealUserMarker ? (
+          marker.map((marker, index) => (
+            <Marker 
+              key={index}
+              position={{ 
+                lat: marker.lat,
+                lng: marker.lng 
+              }} />
+          ))
+        ) : null}     
+          
+ 
+        
 
         {/* shows the answer after submit  */}
         {revealAnswer ? <Marker position={answerCoordinates} icon="http://maps.google.com/mapfiles/ms/icons/green-dot.png"/> : null}
