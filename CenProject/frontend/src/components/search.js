@@ -1,7 +1,8 @@
 import "../style/Search.css"
-import {useState} from "react"
+import {useState, useEffect} from "react"
 import {Link} from 'react-router-dom'
 import FoodCard from "./FoodCard.js"
+import SideBar from "./sideBar.js";
 import Accordion from 'react-bootstrap/Accordion';
 
 
@@ -14,8 +15,14 @@ const Search = () => {
     const [text, setText] = useState("")
     const [checked, setChecked] = useState([])
     const [cards, setCards] = useState([])
+    //states that deal with saving of recipes
+    const [savedRecipes, setSavedRecipes] = useState([])
+    //function to save more and more recipes given a previous recipe has been saved
+    //passed down to other file as a property
+    const saveRecipe = (recipe) => {
+        setSavedRecipes((prevRecipes) => [...prevRecipes, recipe]);
+    };
 
-    
     /*handles clicks for the check box*/
     const handleCheckBox = (e) => {
         if (e.target.checked) {
@@ -29,7 +36,8 @@ const Search = () => {
     const formQuery = (string) => {
         let query = encodeURIComponent(string.replaceAll(" ", "+")); //encodeURIComponent - special characters in a query string are correctly encoded for using in an URL
         if (checked.length > 0)  {
-            let parameters = checked.map(() => '&${param}').join(''); //map function used to map over each element in the checked array and append an '&' character before the parameter to ensure a well formed query 
+            let parameters = checked.map((param) => `${param}`).join(''); //map function used to map over each element in the checked array and append an '&' character before the parameter to ensure a well formed query 
+            console.log(parameters)
             return query + parameters;  //join function above to concatenate the above parameters into 1 string
         }
         return query;
@@ -38,22 +46,24 @@ const Search = () => {
     /*fetches the API data*/ 
     const fetchData = async () => {
         const query = formQuery(text)
-        console.log(query)
+
         try {
-            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=10`)
+            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=1`)
             const object = await data.json()
 
-            // const arr = []
-            // object.results.forEach( (obj) => {
-            //     arr.push(obj.image)
-            // })
-
+            await Promise.all(object.results.map(async(obj, idx) => {
+                const links = await fetch(`https://api.spoonacular.com/recipes/${obj.id}/information?apiKey=${KEY}&includeNutrition=false`)
+                const resLinks = await links.json()
+                obj.links = resLinks.spoonacularSourceUrl
+                return obj
+            }))
+            
+            console.log(object.results)
             setCards(object.results)
-            console.log(object)
           } catch (error) {
             console.log(error)
           }
-    }
+}
 
 
     return (
@@ -62,8 +72,6 @@ const Search = () => {
             <h1 className="webTitle">
                 Recipe Finder 
             </h1>
-
-            <Link to="/geoGuesser">Go To Web</Link>
 
             <p>This is where the user will search up the food</p>
 
@@ -74,18 +82,17 @@ const Search = () => {
                     <Accordion.Item eventKey="0">
                         <Accordion.Header> Filter </Accordion.Header>
                         <Accordion.Body>
-
                             <table>
                             <tb>
                                 <tr><input type="checkbox" value="&maxSugar=25" onChange={handleCheckBox}/> Sugar Free</tr>
                                 <tr><input type="checkbox" value="&maxFat=25" onChange={handleCheckBox}/> Fat Free</tr>
                                 <tr><input type="checkbox" value="&maxCarb=25" onChange={handleCheckBox}/> Low Carbs</tr>
-                                <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/>Most Ingredients Used</tr>
-                                <tr><input type="checkbox" value="&onlyVegetarian=25" onChange={handleCheckBox}/>Vegetarian</tr>
-                                <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/>Has Common Allergens</tr>
-                                <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/>Least Cooking Time</tr>
-                                <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/>Least Preparation Time</tr>
-                                <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/>Type of Cuisine</tr>
+                                <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/> Most Ingredients Used</tr>
+                                <tr><input type="checkbox" value="&diet=vegetarian" onChange={handleCheckBox}/> Vegetarian</tr>
+                                <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/> Has Common Allergens</tr>
+                                <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/> Least Cooking Time</tr>
+                                <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/> Least Preparation Time</tr>
+                                <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/> Type of Cuisine</tr>
                             </tb>
                             </table>
 
@@ -101,20 +108,21 @@ const Search = () => {
                 />
 
                 {/*submit button*/}
-                <button className="submitButton"onClick={fetchData}>submit</button>
-            </div>
+                <button className="submitButton"onClick={fetchData}>Submit</button>
+            </div>  
 
             {/*displays the cards*/}
             <div className="cardsContainer">
                     {cards.map((obj, key) => {
                         return (
-                            <FoodCard key={key} img={obj.image} title={obj.title}></FoodCard>
+                            <FoodCard key={key} img={obj.image} title={obj.title} linkToPage={obj.links} saveRecipe={saveRecipe}></FoodCard>
                         )
                 })}
-            </div> 
-
+            </div>
+            <SideBar savedRecipes={savedRecipes}/>
         </div>
     )
 }
-
+//<SideBar savedRecipes={savedRecipes}/> - rendering of savedRecipes component 
 export default Search
+

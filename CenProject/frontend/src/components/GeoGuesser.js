@@ -1,5 +1,6 @@
 import React from 'react';
 import "../style/GeoGuesser.css"
+import NavBar from "./NavBar"
 import { useState, useEffect } from 'react';
 import { GoogleMap, useLoadScript, Marker, Polyline } from '@react-google-maps/api';
 
@@ -13,7 +14,7 @@ const mapContainerStyle = {
 const center = {
   lat: 37.090240, // default latitude
   lng: -95.712891, // default longitude
-};
+}
 
 
 //TO GET THE LAT AND LNG FROM GPT 
@@ -21,6 +22,7 @@ const center = {
 
 const GeoGuesser = () => {
 
+  const [backendData, setBackendData] = useState([{}])
   const [marker, setMarker] = useState([])
   const [path, setPath] = useState([])
   const [revealAnswer, setAnswer] = useState(false)
@@ -30,6 +32,9 @@ const GeoGuesser = () => {
     googleMapsApiKey: KEY,
     libraries,
   });
+  
+
+  
 
   const getNewIngredient = async () => {
     const data = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${KEY2}&number=1`)
@@ -41,10 +46,28 @@ const GeoGuesser = () => {
     if (food.length !== 0) {
       setIngredient(food[0].name)
     }
+
+    //then make an API call to chat GPT asking where it came from - Do this on Tuesday 
+
+    // then make an API call to get the lat and long coordinates using google maps API - Do this on wednesday 
+
+    // then set the answer marker to those coordinates - Do this on Thursday 
+    
+    // wrap up on friday 
+
   }
 
-  useEffect( async () => {
+  useEffect( () => {
     getNewIngredient()
+    fetch("http://localhost:8000/api").then(
+      response => response.json() 
+    ).then(
+      data => {
+        console.log(data)
+      }
+    )
+    
+  
   }, [])
 
   const onMapClick = (e) => {
@@ -62,7 +85,6 @@ const GeoGuesser = () => {
   const handleSubmit = () => {
 
     setAnswer(true)
-
     setPath(
       [
         {lat: 37.090240, lng: -95.712891},
@@ -91,6 +113,11 @@ const GeoGuesser = () => {
   }
 
   return (
+
+    <div>
+
+      <NavBar/>
+
     <div className="geoGuesserContainer">
 
       <div className="questionsSideBar">
@@ -136,6 +163,9 @@ const GeoGuesser = () => {
       {/* <div className="mainMap">Yoo</div> */}
 
     </div>
+
+    </div>
+
    
   );
 };

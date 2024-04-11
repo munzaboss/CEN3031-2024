@@ -7,8 +7,8 @@ const FoodInfo = () => {
     const {foodID} = useParams();  //grab route parameters from the Route
     const [foodInfo, setFoodInfo] = useState(null); //constant variables set to null at the start
     useEffect(() => {
-        const apiKey = "API_KEY";
-        const apiURL = "https://api.spoonacular.com/food/${foodID}/information?apiKey=${apiKey}"; //link to Spoonacular API docs
+        const apiKey =  process.env.REACT_APP_API_KEY;
+        const apiURL = `https://api.spoonacular.com/food/${foodID}/information?apiKey=${apiKey}`; //link to Spoonacular API docs
         axios.get(apiURL)
             .then(response => {
                 setFoodInfo(response.data); //store the user's data

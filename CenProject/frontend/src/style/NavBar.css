@@ -1,0 +1,40 @@
+.nav-container {
+  height: 11vh;
+  width: 100%;
+  position: relative;
+  border: 1px solid black;
+  background-color: yellowgreen;
+}
+
+.nav-logo{
+    display: inline;
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translate(-50% , -50% );
+}
+
+.nav-title{
+    display: inline;
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    transform: translate(-50% , -50% );
+}
+
+.nav-links{
+    display: inline;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50% );
+}
+
+.nav-links span {
+    padding: 40px;
+}
+
+.nav-link-style {
+    text-decoration: underline;
+    color: black;
+}

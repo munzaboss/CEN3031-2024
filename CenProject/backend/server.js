@@ -7,6 +7,9 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+app.get("/api", (req, res) => {
+    res.json({"users": ["userOne, userTwo, userThree"]})
+})
 
 
 app.post('/createUser', (req, res) => {
