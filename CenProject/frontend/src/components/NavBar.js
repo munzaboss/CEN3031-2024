@@ -21,6 +21,7 @@ const NavBar = () => {
         <span><Link to="/" className="nav-link-style">Home</Link></span>
         <span><Link to="/myRecipes" className="nav-link-style">My Recipies</Link></span>
         <span><Link to="/geoGuesser" className="nav-link-style">GeoGuesser Food</Link></span>
+        <span><Link to="/login" className="nav-link-style">Login</Link></span>
       </div>
 
 
