@@ -19,8 +19,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+
 //Realtime database stuff
-function writeUserData(userID, name, email){
+export function writeUserData(userID, name, email){
   const db = getDatabase();
   const reference = ref(db, 'users/' + userID)
   
@@ -29,5 +30,3 @@ function writeUserData(userID, name, email){
     email: email,
   });
 }
-
-writeUserData('4tk4', 'Munedfdeb', 'bruh@mail')
