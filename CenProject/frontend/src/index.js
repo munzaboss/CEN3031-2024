@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import GeoGuesser from './components/GeoGuesser';
+import MyRecipes from './components/MyRecipes';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: 'login',
     element: <Login/>
+  },
+  {
+    path:"myRecipes",
+    element: <MyRecipes/>
   }
   
 ]);
