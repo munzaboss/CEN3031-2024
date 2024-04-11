@@ -1,13 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set } from "firebase/database";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import dotenv from 'dotenv';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+dotenv.config();
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAhZMHGyFyq8Cd3LpqhKqUTjVm77Q-58-s",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "cen3031-cooking-website.firebaseapp.com",
   projectId: "cen3031-cooking-website",
   storageBucket: "cen3031-cooking-website.appspot.com",
@@ -17,16 +16,19 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
 
-//Realtime database stuff
-export function writeUserData(userID, name, email){
-  const db = getDatabase();
-  const reference = ref(db, 'users/' + userID)
-  
+
+function createUser(userID, name, email, image){
+  const db = getDatabase(firebaseApp);
+  const reference = 'users/' + userID;
   set(reference, {
-    username: name,
+    uid: userID,
+    name: name,
     email: email,
+    userImage: image
   });
 }
+
+export { createUser }
