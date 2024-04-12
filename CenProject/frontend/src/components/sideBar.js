@@ -23,8 +23,6 @@ const SideBar = ({savedRecipes}) => {
             ))}
             </ul>
         </div>
-        
-        
     )
 }
 
