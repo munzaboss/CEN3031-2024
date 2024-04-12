@@ -87,12 +87,12 @@ const Search = () => {
                                 <tr><input type="checkbox" value="&maxSugar=25" onChange={handleCheckBox}/> Sugar Free</tr>
                                 <tr><input type="checkbox" value="&maxFat=25" onChange={handleCheckBox}/> Fat Free</tr>
                                 <tr><input type="checkbox" value="&maxCarb=25" onChange={handleCheckBox}/> Low Carbs</tr>
-                                <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/> Most Ingredients Used</tr>
                                 <tr><input type="checkbox" value="&diet=vegetarian" onChange={handleCheckBox}/> Vegetarian</tr>
-                                <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/> Has Common Allergens</tr>
-                                <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/> Least Cooking Time</tr>
-                                <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/> Least Preparation Time</tr>
-                                <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/> Type of Cuisine</tr>
+                                {/* <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/> Most Ingredients Used</tr> */}
+                                {/* <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/> Has Common Allergens</tr> */}
+                                {/* <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/> Least Cooking Time</tr> */}
+                                {/* <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/> Least Preparation Time</tr> */}
+                                {/* <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/> Type of Cuisine</tr> */}
                             </tb>
                             </table>
 

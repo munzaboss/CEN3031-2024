@@ -5,10 +5,14 @@
 
 .questionsSideBar{
     min-width: 30%;
-    height: 100%;
+    max-height: 100vh;
 }
 
 .mainMap {
     max-width: 70%;
-    height: 100%;
+    max-height: 100vh;
+}
+
+.overflowY {
+    overflow-y: scroll;
 }
