@@ -5,41 +5,48 @@
 
 p {
     text-align: center;
-    padding: 10px;
 }
 
 
 .container {
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
-    background-color: orangered;
+    background-color: white;
 }
 
 .webTitle {
     text-align: center;
     padding: 2px;
+    margin-top: 30px;
+    color: rgb(151,57,24)
+}
+
+.containerForSearchBar {
+    display: flex;
+    align-items: start;
+    justify-content: space-around;
+    margin-top: 30px;
 }
 
 .searchBar {
     border: 1px solid black;
     text-align: center;
-    width: 500px;
+    width: 5000px;
     height: 40px;
-    border-radius: 20px;
     font-size: large;
     margin-top:5px;
+    outline: none;
 }
 
+.submitButton {
+    height: 40px;
+    width: 80px;
+    margin-top:5px;
+} 
 
-.containerForSearchBar {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-
-.customAccordion {
-    max-width: 300px;
+.customAccordion .accordian-item {
+    max-width: 150px;
+    min-height: 40px;
     max-height: 40px;
 }
 
@@ -48,23 +55,15 @@ p {
     flex-direction: column;
 }
 
-
 .cardsContainer {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     gap: 30px;
-    margin: 200px;
+    margin-top: 100px;
 
     justify-content: space-evenly;
     justify-items: center;
     align-content: space-evenly;
     align-items: center;
-
 }
 
-.submitButton {
-    border-radius: 20px;
-    height: 40px;
-    width: 80px;
-    margin-top:5px;
-}

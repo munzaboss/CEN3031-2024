@@ -1,8 +1,16 @@
 .SideBar {
-    height: 100vh;
+    min-height: 100vh;
     min-width: 30%;
     text-align: center;
     border-right: 1px solid black;
-    padding: 10px;
-    background-color: burlywood;
+    display: flex;
+    flex-direction: column;
 }
+
+.SideBar-title {
+    text-align: center;
+    padding: 2px;
+    margin-top: 30px;
+    color: rgb(151,57,24)
+}
+

@@ -65,6 +65,10 @@ const GeoGuesser = () => {
     googleMapsApiKey: KEY,
     libraries,
   });
+
+  useEffect(() => {
+    getNewRecipe()
+  }, [])
   
   //gets a random recipe from a certain origin
   const getNewRecipe = async () => {
