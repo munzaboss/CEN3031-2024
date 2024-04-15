@@ -11,7 +11,7 @@ const UserRecipeCard = (props) => {
     const [editable, setEditable] = useState(false)
 
     return(
-        <div className={`recipe-child d-flex flex-row ${editable ? 'border border-danger' : null}`}>
+        <div className={`recipe-child d-flex flex-row border border-black ${editable ? 'border border-danger' : null}`}>
                 <div className="recipe-image w-25">
                     <img className="w-100 h-100 recipe-img" src={props.URL}></img>
                 </div>
@@ -22,7 +22,7 @@ const UserRecipeCard = (props) => {
                         <div>
                             <div className="d-flex justify-content-center mt-0">
                                 <h1>Title</h1>
-                                <button onClick={() => setEditable(false)}className="btn btn-danger" style={{height: "50px", width: "100px", transform: "translate(55vh)"}}>Confirm?</button>
+                                <button onClick={() => setEditable(false)}className="btn btn-danger" style={{height: "50px", width: "100px", marginTop: "4px", transform: "translate(55vh)"}}>Confirm?</button>
                             </div>
 
                             <div className="d-flex flex-column align-items-start mt-5">
@@ -36,7 +36,7 @@ const UserRecipeCard = (props) => {
                         <div>
                             <div className="d-flex justify-content-center mt-0">
                                 <h1>Title</h1>
-                                <button onClick={() => setEditable(true)}className="btn btn-primary" style={{height: "50px", width: "100px", transform: "translate(55vh)"}}>Edit</button>
+                                <button onClick={() => setEditable(true)}className="btn btn-primary" style={{height: "50px", width: "100px", marginTop: "4px", transform: "translate(55vh)"}}>Edit</button>
                             </div>
 
                             <div className="d-flex flex-column align-items-start mt-5">
