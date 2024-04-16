@@ -48,7 +48,7 @@ import { useEffect } from 'react';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { useNavigate } from 'react-router-dom';
-import './Login.css'; // Make sure this path is correct to include your styles
+import '../style/Login.css'; // Make sure this path is correct to include your styles
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
