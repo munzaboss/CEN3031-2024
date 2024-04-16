@@ -36,7 +36,7 @@ const SideBar = () => {
         <div className="SideBar">
 
             <h3 className="SideBar-title">
-                My Recipes
+                Saved Recipes
             </h3>
 
             {IMAGES.map((link) => {
