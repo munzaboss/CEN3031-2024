@@ -152,9 +152,9 @@ const GeoGuesser = () => {
         {/* left side of the screen  */}
         <div className="questionsSideBar overflow-hidden">
           <div className="mt-2 d-flex justify-content-around">
-            <button className="btn btn-success" onClick={getNewRecipe}>Get New Recipe</button>
+            <button className="btn btn-primary" onClick={getNewRecipe}>Get New Recipe</button>
             <button className="btn btn-danger" onClick={handleSubmit}>Submit Answer</button>
-            <button className="btn btn-primary"> Save Recipe</button>
+            <button className="btn btn-success"> Save Recipe</button>
           </div>
          
 

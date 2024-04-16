@@ -1,6 +1,6 @@
 
 
 .foodCard:hover {
-    box-shadow: 1px 1px 12px rgb(213,130,47);
+    box-shadow: 1px 1px 12px grey;
     transition: box-shadow 100ms ease-in-out;
 }
