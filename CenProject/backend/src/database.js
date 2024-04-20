@@ -20,15 +20,21 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 
 
-function createUser(userID, name, email, image){
+function DBcreateUser(userID, name, email, image){
   const db = getDatabase(firebaseApp);
-  const reference = 'users/' + userID;
+  const reference = ref(db,'users/' + userID);
   set(reference, {
     uid: userID,
     name: name,
     email: email,
     userImage: image
-  });
+  }).then(() => {
+    console.log('Data stored succesfuly in database');
+  }).catch((error) => {
+    console.log('Error storing user data: ', error)
+  })
 }
 
-export { createUser }
+
+
+export { DBcreateUser }

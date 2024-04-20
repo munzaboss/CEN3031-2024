@@ -26,14 +26,33 @@ function Login() {
 
     const handleLogin = async () => {
         try{
+            console.log("Current User: ", auth.currentUser);
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
+
+            //preparing the data to be posted to backend
+            const userData = {
+                userID: result.user.uid,
+                name: result.user.displayName,
+                email: result.user.email,
+                image: result.user.photoURL
+
+            }
+
+            //backend call
+            const createUserResponse = await axios.post('http://localhost:8000/createUser', userData)
+            console.log( createUserResponse.data );
+            console.log("Current User: ", auth.currentUser);
             navigate("/");
             console.log("Login succesful");
         } catch (error) {
             console.log("Login Failed", error.code, error.message)
         }
     }
+
+
+    
+
     return (
         <div>
             <h1> Login Page </h1>
