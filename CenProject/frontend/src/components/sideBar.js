@@ -8,6 +8,20 @@ import car5 from "../images/img-5.jpeg"
 import UserRecipesOnSearch from "./userRecipesOnSearch"
 
 const SideBar = () => {
+    //TO DO
+    //THE FORMATING FOR INSTRUCTIONS STORED IN DATA BASE is incorrect and may cause issues. Must figure out how to retain
+    //formatting data
+    //
+    //Must display correct stuff to sidebar.
+    //need to make get calls to get stuff to post to sidebar
+    //ned to make get calls to get stuff to post to my recipes
+    //Ensure my recipes search function works as intended
+
+
+
+
+
+
     //if there are 0 saved recipes, tell that to the user
     // if (!savedRecipes) {
     //     return <div className="SideBar">No Saved Recipes</div>;

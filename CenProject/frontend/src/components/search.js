@@ -79,7 +79,7 @@ const Search = () => {
 
         try {
             //number is currently 2 for testing purposes
-            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=2`)
+            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=1`)
             const object = await data.json()
             console.log("Object: ", object);
 
@@ -92,8 +92,17 @@ const Search = () => {
                 obj.summary = resLinks.summary
                 obj.instructions = resLinks.instructions
 
-                //required for saving function
+                //required for saving function. uses idx index card to know which recipe to save.
                 obj.idx = idx
+
+                //makes a backend call to check if recipe is already saved. Checks if logged in. If not sets to false
+                if (auth.currentUser){
+                    const recipeSavedResponse = await axios.get(`http://localhost:8000/isRecipeSaved?userID=${auth.currentUser.uid}&recipeID=${obj.id}`)
+                    obj.isRecipeSaved = recipeSavedResponse.data
+                } else {
+                    obj.isRecipeSaved = false
+                }
+                
                 console.log("obj: ", obj);
                 return obj
             }))
@@ -166,7 +175,7 @@ const Search = () => {
             <div className="cardsContainer">
                     {cards.map((obj, key) => {
                         return (
-                            <FoodCard id={obj.id} idx = {obj.idx} title = {obj.title} img = {obj.image} linkToPage = {obj.links} auth = {auth} saveRecipe={saveRecipe}></FoodCard>
+                            <FoodCard id={obj.id} idx = {obj.idx} title = {obj.title} img = {obj.image} linkToPage = {obj.links} auth = {auth} saveRecipe={saveRecipe} isRecipeSaved={obj.isRecipeSaved}></FoodCard>
                         )
                 })}
             </div>

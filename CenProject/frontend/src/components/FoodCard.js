@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import "../style/FoodCard.css"
 
-const FoodCard = ({id, idx, linkToPage, title, img, auth, saveRecipe}) => {
+const FoodCard = ({id, idx, linkToPage, title, img, auth, saveRecipe, isRecipeSaved}) => {
+  
+  const [saved, setSaved] = useState(isRecipeSaved);
+  
   const handleSave = () => {
     saveRecipe({id, idx});
+    setSaved(true)
   };
+
+  useEffect(() => {
+    // Update the local state when isRecipeSaved prop changes (e.g., after a new search)
+    setSaved(isRecipeSaved);
+  }, [id]);
+
   //onClick to allow user clicking  
   
   return (
@@ -22,7 +32,12 @@ const FoodCard = ({id, idx, linkToPage, title, img, auth, saveRecipe}) => {
           </div>
           </Card.Title>
         {auth.currentUser ? (
-          <Button variant="success" onClick={handleSave} style={{color: "white", borderRadius: "10px", height: "35px"}}>Save</Button>
+          saved ? (
+            <Button disabled='true' title ="Already Saved" style={{backgroundColor: 'blue', color: "white", borderRadius: "10px", height: "35px"}}>Saved</Button>
+          ) : (
+            <Button variant="success" onClick={handleSave} style={{color: "white", borderRadius: "10px", height: "35px"}}>Save</Button>
+          )
+         
         ) : (
           <Button disabled='true' title ="Must login to save" style={{backgroundColor: 'grey', color: "white", borderRadius: "10px", height: "35px"}}>Must Login To Save</Button>
         )}

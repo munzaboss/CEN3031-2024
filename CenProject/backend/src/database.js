@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, get } from "firebase/database";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -20,7 +20,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 
 
-function DBcreateUser(userID, name, email, image){
+async function DBcreateUser(userID, name, email, image){
   const db = getDatabase(firebaseApp);
   const reference = ref(db,'users/' + userID);
   set(reference, {
@@ -36,9 +36,9 @@ function DBcreateUser(userID, name, email, image){
 }
 
 
-function DBsaveRecipe(userID, recipeID, recipeTitle, recipeImage, recipeLink, summary, instructions){
+async function DBsaveRecipe(userID, recipeID, recipeTitle, recipeImage, recipeLink, summary, instructions){
   const db = getDatabase(firebaseApp);
-  const reference = ref(db, 'users/' + userID + '/recipes');
+  const reference = ref(db, 'users/' + userID + '/recipes/' + recipeID);
   set(reference, {
     recipeID: recipeID,
     recipeTitle: recipeTitle,
@@ -50,4 +50,36 @@ function DBsaveRecipe(userID, recipeID, recipeTitle, recipeImage, recipeLink, su
 }
 
 
-export { DBcreateUser, DBsaveRecipe }
+async function DBcheckUser(userID){
+  const db = getDatabase(firebaseApp);
+  const userRef = ref(db, `users/${userID}`);
+  try {
+    const snapshot = await get(userRef);
+    if (snapshot.exists()){
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error checking user: ", error);
+    throw error;
+  }
+}
+
+async function DBisRecipeSaved(userID, recipeID){
+  const db = getDatabase(firebaseApp);
+  const recipeRef = ref(db, `users/${userID}/recipes/${recipeID}`);
+  try {
+    const snapshot = await get(recipeRef);
+    if (snapshot.exists()){
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error checking recipe: ", error);
+    throw error;
+  }
+}
+
+export { DBcreateUser, DBsaveRecipe, DBcheckUser, DBisRecipeSaved };
