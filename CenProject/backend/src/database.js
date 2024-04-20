@@ -82,4 +82,27 @@ async function DBisRecipeSaved(userID, recipeID){
   }
 }
 
-export { DBcreateUser, DBsaveRecipe, DBcheckUser, DBisRecipeSaved };
+
+async function DBgetSavedRecipes(userID){
+  console.log('okay lets go')
+  const db = getDatabase(firebaseApp);
+  const recipesRef = ref(db, `users/${userID}/recipes`)
+  try {
+    const snapshot = await get(recipesRef);
+
+    if (snapshot.exists()){
+      const recipesObject = snapshot.val();
+      console.log("recipes object: ", recipesObject);
+      const recipesArray = Object.keys(recipesObject).map((recipeID) => ({
+        ...recipesObject[recipeID], 
+        recipeID: parseInt(recipeID)
+      }));
+      return recipesArray;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error in getting saved recipes: ", error)
+  }
+}
+export { DBcreateUser, DBsaveRecipe, DBcheckUser, DBisRecipeSaved, DBgetSavedRecipes };

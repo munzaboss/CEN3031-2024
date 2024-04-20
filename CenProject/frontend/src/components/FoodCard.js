@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import "../style/FoodCard.css"
 
-const FoodCard = ({id, idx, linkToPage, title, img, auth, saveRecipe, isRecipeSaved}) => {
+const FoodCard = ({id, idx, linkToPage, title, img, auth, saveRecipe, isRecipeSaved, savedRecipes, setSavedRecipes}) => {
   
   const [saved, setSaved] = useState(isRecipeSaved);
   

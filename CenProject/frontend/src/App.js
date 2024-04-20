@@ -3,10 +3,13 @@ import SideBar from './components/sideBar';
 import NavBar from './components/NavBar'
 import './style/App.css'
 import 'bootstrap/dist/css/bootstrap.css'
+import { getAuth } from 'firebase/auth'
 
 
 //Referenced tutorial: https://www.geeksforgeeks.org/reactjs-router/ 
 const App = () =>{
+
+
     return (
 
       <div>

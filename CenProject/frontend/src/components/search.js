@@ -18,8 +18,44 @@ const Search = () => {
     const [cards, setCards] = useState([])
     //states that deal with saving of recipes
     const [savedRecipes, setSavedRecipes] = useState([])
-    //function to save more and more recipes given a previous recipe has been saved
-    //passed down to other file as a property
+    const [user, setUser] = useState(auth.currentUser)
+
+    //updating user prop anytime change happens
+  useEffect(() => {
+    const auth = getAuth();
+    const change = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    return () => {
+      change();
+    };
+  }, []);
+    useEffect(() => {
+        const fetchSavedRecipes = async () => {
+            if (auth.currentUser){
+                try {
+                    console.log(auth.currentUser.uid)
+                    const response = await axios.get(`http://localhost:8000/getSavedRecipes?userID=${auth.currentUser.uid}`);
+                    if (response.data && response.data.recipes) {
+                        setSavedRecipes(response.data.recipes);
+                    } else {
+                        setSavedRecipes([]);
+                    }
+                } catch (error) {
+                    console.log("Error in fetching sasved recipes: ", error)
+                }
+            } else {
+                setSavedRecipes([]);
+            }
+
+        };
+        if (auth.currentUser) {
+            fetchSavedRecipes();
+        } else {
+            console.log('user is null')
+        }
+        
+    }, [user]);
     const saveRecipe = async (SelectedRecipe) => {
         console.log(SelectedRecipe.id);
         console.log(SelectedRecipe.idx);
@@ -97,8 +133,9 @@ const Search = () => {
 
                 //makes a backend call to check if recipe is already saved. Checks if logged in. If not sets to false
                 if (auth.currentUser){
-                    const recipeSavedResponse = await axios.get(`http://localhost:8000/isRecipeSaved?userID=${auth.currentUser.uid}&recipeID=${obj.id}`)
-                    obj.isRecipeSaved = recipeSavedResponse.data
+                    const isRecipeSaved = savedRecipes.some((recipe) => recipe.recipeID === obj.id);
+                    obj.isRecipeSaved = isRecipeSaved
+
                 } else {
                     obj.isRecipeSaved = false
                 }
@@ -175,7 +212,7 @@ const Search = () => {
             <div className="cardsContainer">
                     {cards.map((obj, key) => {
                         return (
-                            <FoodCard id={obj.id} idx = {obj.idx} title = {obj.title} img = {obj.image} linkToPage = {obj.links} auth = {auth} saveRecipe={saveRecipe} isRecipeSaved={obj.isRecipeSaved}></FoodCard>
+                            <FoodCard id={obj.id} idx = {obj.idx} title = {obj.title} img = {obj.image} linkToPage = {obj.links} auth = {auth} saveRecipe={saveRecipe} isRecipeSaved={obj.isRecipeSaved} savedRecipes = {savedRecipes}  setSavedRecipes = {setSavedRecipes}></FoodCard>
                         )
                 })}
             </div>

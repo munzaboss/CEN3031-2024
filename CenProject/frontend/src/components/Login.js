@@ -1,11 +1,10 @@
+
 import { useEffect } from 'react';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import axios from 'axios';
 import { initializeApp } from "firebase/app";
 import { useNavigate } from 'react-router-dom';
 import '../style/Login.css'; // Make sure this path is correct to include your styles
-import googleLogo from '../images/google.png';
-
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -47,12 +46,19 @@ function Login() {
 
           }
 
-          //backend call
-          const createUserResponse = await axios.post('http://localhost:8000/createUser', userData)
-          console.log( createUserResponse.data );
+          //backend call. IF user exists do nothing, if doesnt exist create the database entry
+
+          const isUserExist = await axios.get(`http://localhost:8000/checkUser?userID=${userData.userID}` )
+          console.log("isUserExst: ", isUserExist.data)
+
+          if(!isUserExist.data){
+            const createUserResponse = await axios.post('http://localhost:8000/createUser', userData)
+            console.log( createUserResponse.data );
+          }
+
           console.log("Current User: ", auth.currentUser);
           navigate("/");
-          console.log("Login successful");
+          console.log("Login succesful");
       } catch (error) {
           console.log("Login Failed", error.code, error.message)
       }
@@ -61,12 +67,12 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-content">
-        <h1>Pixel Palate</h1>
+        <h1>Welcome back!</h1>
         <div className="google-btn" onClick={handleLogin}>
           <div className="google-icon-wrapper">
-            <img className="google-icon" src={googleLogo} alt="Google Sign-In" />
+            <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google sign-in" />
           </div>
-          <p className="btn-text"><b>Sign In with Google</b></p>
+          <p className="btn-text"><b>Sign in with Google</b></p>
         </div>
       </div>
     </div>
