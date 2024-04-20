@@ -36,5 +36,18 @@ function DBcreateUser(userID, name, email, image){
 }
 
 
+function DBsaveRecipe(userID, recipeID, recipeTitle, recipeImage, recipeLink, summary, instructions){
+  const db = getDatabase(firebaseApp);
+  const reference = ref(db, 'users/' + userID + '/recipes');
+  set(reference, {
+    recipeID: recipeID,
+    recipeTitle: recipeTitle,
+    recipeImage: recipeImage,
+    recipeLink: recipeLink,
+    summary: summary,
+    instructions: instructions
+  })
+}
 
-export { DBcreateUser }
+
+export { DBcreateUser, DBsaveRecipe }

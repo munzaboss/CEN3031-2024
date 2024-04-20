@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { DBcreateUser } from './src/database.js'
+import { DBcreateUser, DBsaveRecipe } from './src/database.js'
 
 
 const app = express()
@@ -20,7 +20,11 @@ app.post('/test', (req, res) => {
     res.send('bruh');
 });
 
-app.post('/saveRecipeTest')
+app.post('/saveRecipeTest', (req, res) => {
+    const { userID, recipeID, recipeTitle, recipeImage, recipeLink, summary, instructions } = req.body
+    DBsaveRecipe(userID, recipeID, recipeTitle, recipeImage, recipeLink, summary, instructions);
+    res.send('Recipe Saved');
+});
 
 // app.post('/saveTestRecipe', (req, res) => {
     
