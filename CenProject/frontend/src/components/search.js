@@ -2,7 +2,6 @@ import "../style/Search.css"
 import {useState, useEffect} from "react"
 import {Link} from 'react-router-dom'
 import FoodCard from "./FoodCard.js"
-import SideBar from "./sideBar.js";
 import Accordion from 'react-bootstrap/Accordion';
 
 
@@ -48,7 +47,7 @@ const Search = () => {
         const query = formQuery(text)
 
         try {
-            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=1`)
+            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=9`)
             const object = await data.json()
 
             await Promise.all(object.results.map(async(obj, idx) => {
@@ -67,16 +66,34 @@ const Search = () => {
 
 
     return (
+
         <div className="container">
 
             <h1 className="webTitle">
-                Recipe Finder 
+                <b>Find your favorite recipes</b>
             </h1>
 
-            <p>This is where the user will search up the food</p>
 
             {/*for the entire search bar row*/}
+
+
+
             <div className="containerForSearchBar">
+
+                {/*search bar*/}
+                <input 
+                className="searchBar"
+                style={{width: "70%", borderRadius: "15px", textAlign: "left", padding: "10px"}}
+                placeholder="Search Here"
+                onChange={(e) => setText(e.target.value)} />
+                
+                {/*submit button*/}
+                <button className="submitButton" 
+                onClick={fetchData}
+                style={{borderRadius: "15px", border: "none"}}>
+                Submit
+                </button>
+
                 {/*drop down menu*/}
                 <Accordion className="customAccordion">
                     <Accordion.Item eventKey="0">
@@ -87,29 +104,22 @@ const Search = () => {
                                 <tr><input type="checkbox" value="&maxSugar=25" onChange={handleCheckBox}/> Sugar Free</tr>
                                 <tr><input type="checkbox" value="&maxFat=25" onChange={handleCheckBox}/> Fat Free</tr>
                                 <tr><input type="checkbox" value="&maxCarb=25" onChange={handleCheckBox}/> Low Carbs</tr>
-                                <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/> Most Ingredients Used</tr>
                                 <tr><input type="checkbox" value="&diet=vegetarian" onChange={handleCheckBox}/> Vegetarian</tr>
-                                <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/> Has Common Allergens</tr>
-                                <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/> Least Cooking Time</tr>
-                                <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/> Least Preparation Time</tr>
-                                <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/> Type of Cuisine</tr>
+                                {/* <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/> Most Ingredients Used</tr> */}
+                                {/* <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/> Has Common Allergens</tr> */}
+                                {/* <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/> Least Cooking Time</tr> */}
+                                {/* <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/> Least Preparation Time</tr> */}
+                                {/* <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/> Type of Cuisine</tr> */}
                             </tb>
                             </table>
 
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
-
-                {/*search bar*/}
-                <input 
-                className="searchBar"
-                placeholder="Search Here"
-                onChange={(e) => setText(e.target.value)}
-                />
-
-                {/*submit button*/}
-                <button className="submitButton"onClick={fetchData}>Submit</button>
+                
             </div>  
+
+
 
             {/*displays the cards*/}
             <div className="cardsContainer">
@@ -119,8 +129,8 @@ const Search = () => {
                         )
                 })}
             </div>
-            <SideBar savedRecipes={savedRecipes}/>
         </div>
+
     )
 }
 //<SideBar savedRecipes={savedRecipes}/> - rendering of savedRecipes component 
