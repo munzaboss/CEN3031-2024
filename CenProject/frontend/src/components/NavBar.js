@@ -5,11 +5,9 @@ import { getAuth, signOut } from "firebase/auth"
 import { useState, useEffect } from "react"
 
 
-const NavBar = () => {
+const NavBar = ({user, setUser}) => {
   
   const auth = getAuth();
-  // auth.current user is null if no one is signed in
-  const [user, setUser] = useState(auth.currentUser)
 
   //handles logout using firebase signout funciton
   const handleLogout = async () => {

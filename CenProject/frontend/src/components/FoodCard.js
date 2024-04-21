@@ -14,7 +14,7 @@ const FoodCard = ({id, idx, linkToPage, title, img, auth, saveRecipe, isRecipeSa
   };
 
   useEffect(() => {
-    // Update the local state when isRecipeSaved prop changes (e.g., after a new search)
+    // Update the local state when isRecipeSaved prop changes
     setSaved(isRecipeSaved);
   }, [id]);
 

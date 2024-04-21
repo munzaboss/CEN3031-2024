@@ -9,7 +9,7 @@ import axios from 'axios'
 
 
 
-const Search = () => {
+const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
 
     const auth = getAuth();
     const KEY = process.env.REACT_APP_API_KEY
@@ -17,45 +17,6 @@ const Search = () => {
     const [checked, setChecked] = useState([])
     const [cards, setCards] = useState([])
     //states that deal with saving of recipes
-    const [savedRecipes, setSavedRecipes] = useState([])
-    const [user, setUser] = useState(auth.currentUser)
-
-    //updating user prop anytime change happens
-  useEffect(() => {
-    const auth = getAuth();
-    const change = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return () => {
-      change();
-    };
-  }, []);
-    useEffect(() => {
-        const fetchSavedRecipes = async () => {
-            if (auth.currentUser){
-                try {
-                    console.log(auth.currentUser.uid)
-                    const response = await axios.get(`http://localhost:8000/getSavedRecipes?userID=${auth.currentUser.uid}`);
-                    if (response.data && response.data.recipes) {
-                        setSavedRecipes(response.data.recipes);
-                    } else {
-                        setSavedRecipes([]);
-                    }
-                } catch (error) {
-                    console.log("Error in fetching sasved recipes: ", error)
-                }
-            } else {
-                setSavedRecipes([]);
-            }
-
-        };
-        if (auth.currentUser) {
-            fetchSavedRecipes();
-        } else {
-            console.log('user is null')
-        }
-        
-    }, [user]);
     const saveRecipe = async (SelectedRecipe) => {
         console.log(SelectedRecipe.id);
         console.log(SelectedRecipe.idx);
@@ -80,6 +41,19 @@ const Search = () => {
             console.log(response);
             if (response.status === 200) {
                 console.log('Recipe saved successfully.');
+
+                const savedRecipe = {
+                    recipeID: recipe.id,
+                    recipeImage: recipe.image,
+                    recipeLink: recipe.links,
+                    recipeTitle: recipe.title,
+                    instructions: recipe.instructions,
+                    summary: recipe.summary
+                };
+    
+                // Manually update the savedRecipes state by adding the simplified saved recipe
+                setSavedRecipes([...savedRecipes, savedRecipe]);
+
             } else {
                 console.error('Failed to save recipe.');
             }
