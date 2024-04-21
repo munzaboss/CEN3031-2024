@@ -3,23 +3,63 @@ import {useState, useEffect} from "react"
 import {Link} from 'react-router-dom'
 import FoodCard from "./FoodCard.js"
 import Accordion from 'react-bootstrap/Accordion';
+import { getAuth } from 'firebase/auth';
+import axios from 'axios'
 
 
 
 
-const Search = () => {
+const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
 
-    
+    const auth = getAuth();
     const KEY = process.env.REACT_APP_API_KEY
     const [text, setText] = useState("")
     const [checked, setChecked] = useState([])
     const [cards, setCards] = useState([])
     //states that deal with saving of recipes
-    const [savedRecipes, setSavedRecipes] = useState([])
-    //function to save more and more recipes given a previous recipe has been saved
-    //passed down to other file as a property
-    const saveRecipe = (recipe) => {
-        setSavedRecipes((prevRecipes) => [...prevRecipes, recipe]);
+    const saveRecipe = async (SelectedRecipe) => {
+        console.log(SelectedRecipe.id);
+        console.log(SelectedRecipe.idx);
+        // console.log(savedRecipes);
+        // setSavedRecipes((prevRecipes) => [...prevRecipes, recipe]);
+        // console.log(savedRecipes)
+        const recipe = cards[SelectedRecipe.idx]
+        console.log("Recipe: ", recipe)
+        console.log('RecipeID: ', recipe.id)
+
+        try {
+            console.log(auth.currentUser)
+            const response = await axios.post('http://localhost:8000/saveRecipeTest', {
+                userID: auth.currentUser.uid,
+                recipeID: recipe.id,
+                recipeTitle: recipe.title,
+                recipeImage: recipe.image,
+                recipeLink: recipe.links,
+                summary: recipe.summary,
+                instructions: recipe.instructions
+            });
+            console.log(response);
+            if (response.status === 200) {
+                console.log('Recipe saved successfully.');
+
+                const savedRecipe = {
+                    recipeID: recipe.id,
+                    recipeImage: recipe.image,
+                    recipeLink: recipe.links,
+                    recipeTitle: recipe.title,
+                    instructions: recipe.instructions,
+                    summary: recipe.summary
+                };
+    
+                // Manually update the savedRecipes state by adding the simplified saved recipe
+                setSavedRecipes([...savedRecipes, savedRecipe]);
+
+            } else {
+                console.error('Failed to save recipe.');
+            }
+        } catch (error) {
+            console.error('Error saving recipe:', error);
+        }
     };
 
     /*handles clicks for the check box*/
@@ -45,15 +85,36 @@ const Search = () => {
     /*fetches the API data*/ 
     const fetchData = async () => {
         const query = formQuery(text)
+        console.log("Query: ", query)
 
         try {
-            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=9`)
+            //number is currently 2 for testing purposes
+            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=1`)
             const object = await data.json()
+            console.log("Object: ", object);
 
             await Promise.all(object.results.map(async(obj, idx) => {
                 const links = await fetch(`https://api.spoonacular.com/recipes/${obj.id}/information?apiKey=${KEY}&includeNutrition=false`)
                 const resLinks = await links.json()
+                console.log("resLinks: ", resLinks)
+                //give obj any parametesr here. If user choses to save, these parameters will be saved
                 obj.links = resLinks.spoonacularSourceUrl
+                obj.summary = resLinks.summary
+                obj.instructions = resLinks.instructions
+
+                //required for saving function. uses idx index card to know which recipe to save.
+                obj.idx = idx
+
+                //makes a backend call to check if recipe is already saved. Checks if logged in. If not sets to false
+                if (auth.currentUser){
+                    const isRecipeSaved = savedRecipes.some((recipe) => recipe.recipeID === obj.id);
+                    obj.isRecipeSaved = isRecipeSaved
+
+                } else {
+                    obj.isRecipeSaved = false
+                }
+                
+                console.log("obj: ", obj);
                 return obj
             }))
             
@@ -125,7 +186,7 @@ const Search = () => {
             <div className="cardsContainer">
                     {cards.map((obj, key) => {
                         return (
-                            <FoodCard key={key} img={obj.image} title={obj.title} linkToPage={obj.links} saveRecipe={saveRecipe}></FoodCard>
+                            <FoodCard id={obj.id} idx = {obj.idx} title = {obj.title} img = {obj.image} linkToPage = {obj.links} auth = {auth} saveRecipe={saveRecipe} isRecipeSaved={obj.isRecipeSaved} savedRecipes = {savedRecipes}  setSavedRecipes = {setSavedRecipes}></FoodCard>
                         )
                 })}
             </div>
