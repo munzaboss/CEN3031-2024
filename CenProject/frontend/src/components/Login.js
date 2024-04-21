@@ -5,6 +5,7 @@ import axios from 'axios';
 import { initializeApp } from "firebase/app";
 import { useNavigate } from 'react-router-dom';
 import '../style/Login.css'; // Make sure this path is correct to include your styles
+import googlelogo from '../images/google.png';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -70,7 +71,7 @@ function Login() {
         <h1>Welcome back!</h1>
         <div className="google-btn" onClick={handleLogin}>
           <div className="google-icon-wrapper">
-            <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google sign-in" />
+            <img className="google-icon" src={googlelogo} alt="Google sign-in" />
           </div>
           <p className="btn-text"><b>Sign in with Google</b></p>
         </div>
