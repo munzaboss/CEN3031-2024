@@ -194,6 +194,7 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
 
     )
 }
-//<SideBar savedRecipes={savedRecipes}/> - rendering of savedRecipes component 
+            // <SideBar savedRecipes={savedRecipes}/> 
+            
 export default Search
 

@@ -26,9 +26,6 @@ const SideBar = ({savedRecipes}) => {
                 )
             })}
 
-
-
-
         </div>
     )
 }

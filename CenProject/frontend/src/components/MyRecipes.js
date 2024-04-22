@@ -6,36 +6,27 @@ import car2 from "../images/img-2.jpeg"
 import car3 from "../images/img-3.jpeg"
 import car4 from "../images/img-4.jpeg"
 import car5 from "../images/img-5.jpeg"
-import {useState} from 'react'
+import axios from 'axios'
+import { getAuth } from 'firebase/auth'
+import {useState, useEffect} from 'react'
 
 
 
-const MyRecipes = () => {
+const MyRecipes = ({user, savedRecipes, setSavedRecipes, setUser}) => {
     const IMAGES = [car1, car2, car3, car4, car5]
     const [text, setText] = useState("")
-    /* Use fuse.js for the search bar to implement a fuzzy search*/
+
+    console.log(savedRecipes[0])
+
 
     return (
         <div>
             <NavBar/>
-
-            <div className="d-flex justify-content-center mt-2">
-                <input 
-                    className="searchBar"
-                    placeholder="Search Here"
-                    onChange={(e) => setText(e.target.value)}
-                    style={{ marginRight: '1rem', marginTop: "1rem"}}
-                    />
-
-                    {/*submit button*/}
-                <button className="submitButton" style={{marginTop: "1rem"}}>submit</button>
-            </div>
         
-
             <div className="recipe-container">
-                {IMAGES.map((src) => {
+                {savedRecipes.map((obj, key) => {
                     return (
-                        <UserRecipeCard URL={src}/>
+                        <UserRecipeCard key={key} title={obj.recipeTitle} URL={obj.recipeLink} instructions={obj.instructions} summary={obj.summary} url={obj.recipeImage}/>
                     )
                 })}
             </div>

@@ -1,0 +1,8 @@
+.custom-fade > * {
+    text-align: left;
+    color: transparent; /* Make text transparent */
+    background-image: linear-gradient(to right, black, white); /* Adjust gradient colors */
+    -webkit-background-clip: text; /* Apply background-clip to text */
+    background-clip: text;
+}
+   

@@ -9,7 +9,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Login from './components/Login';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import axios from 'axios'
+import { getAuth } from 'firebase/auth'
+
+
 
 //Wrapper function to wrap the App component and pass props from App to the child components 
 function Wrapper({children, user, setUser, savedRecipes, setSavedRecipes}){
@@ -22,6 +26,53 @@ const Index = () => {
   const [user, setUser] = useState(null);  //changes during the login process
   const [savedRecipes, setSavedRecipes] = useState([]); //redeclared in index.js (parent class) to effectively pass down to child
   //Wrapper component used to wrap all propps and pass them to the child components 
+
+  const auth = getAuth();
+
+  useEffect(() => {
+    console.log('Current user on page load:', user)
+    const auth = getAuth();
+    const change = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    }); 
+    return () => {
+      change();
+    };
+  }, [auth, user]); //pass auth and user since this deals with user authentication
+
+
+    useEffect(() => {
+        const fetchSavedRecipes = async () => {
+            if (user){
+                try {
+                    console.log(auth.currentUser.uid)
+                    const response = await axios.get(`http://localhost:8000/getSavedRecipes?userID=${auth.currentUser.uid}`);
+                    if (response.data && response.data.recipes) {
+                        setSavedRecipes(response.data.recipes);
+                    } else {
+                        setSavedRecipes([]);
+                    }
+                } catch (error) {
+                    console.log("Error in fetching saved recipes: ", error)
+                }
+            } else {
+                setSavedRecipes([]);
+            }
+
+        };
+
+        if (user) {
+            fetchSavedRecipes();
+        } else {
+            console.log('user is null')
+            setSavedRecipes([]);
+        }
+        
+    }, [user, auth]); 
+
+
+
+  
   const router = createBrowserRouter([
     {
       path: "/",
@@ -59,8 +110,10 @@ const Index = () => {
       path:"myRecipes",
       element: (
       <Wrapper 
+        setUser = {setUser}  
         user={user}
-        savedRecipes={savedRecipes}>
+        savedRecipes={savedRecipes}
+        setSavedRecipes = {setSavedRecipes}> 
           <MyRecipes />
         </Wrapper> //MyRecipes.js needs access to the user and savedRecipes props when viewing recipes that are saved
       ),
