@@ -1,0 +1,41 @@
+.card-container {
+    display: flex; 
+    width: 90%;
+    height: 100px;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.card-container:hover {
+cursor: pointer;
+}
+
+.card-img{ 
+    min-height: 100%;
+}
+
+.card-text-container{
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-text {
+    /* border: 1px solid red; */
+    margin-left: 10px;
+    position: absolute;
+    top: 22.5%;
+    white-space: nowrap;
+
+}
+
+.card-text > * {
+    text-align: left;
+    color: transparent; /* Make text transparent */
+    background-image: linear-gradient(to right, black, white); /* Adjust gradient colors */
+    -webkit-background-clip: text; /* Apply background-clip to text */
+    background-clip: text;
+}
+   
+
+
