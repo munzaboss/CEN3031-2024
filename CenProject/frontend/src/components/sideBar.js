@@ -3,7 +3,10 @@ import '../style/SideBar.css'
 import UserRecipesOnSearch from "./userRecipesOnSearch"
 
 const SideBar = ({savedRecipes}) => {
-
+    //condition to fix a map() error -> recommended by ChatGPT
+    if (!savedRecipes || !Array.isArray(savedRecipes)){
+        return <div>No saved recipes found</div>
+    }
 
     return (
         <div className="SideBar">

@@ -4,15 +4,16 @@ import NavBar from './components/NavBar'
 import './style/App.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import { getAuth } from 'firebase/auth'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
 
 //Referenced tutorial: https://www.geeksforgeeks.org/reactjs-router/ 
-const App = () =>{
+//wrap the below 4 props to be passed up to index.js (parent class)
+const App = ({user, setUser}) =>{
     const auth = getAuth();
-    const [user, setUser] = useState(auth.currentUser)
-    const [savedRecipes, setSavedRecipes] = useState([])
+    //const [user, setUser] = useState(auth.currentUser)
+    const [savedRecipes, setSavedRecipes] = useState([]) //initially set to empty array so you need to initialize
 
     useEffect(() => {
       console.log('Current user on page load:', user)
@@ -23,7 +24,7 @@ const App = () =>{
       return () => {
         change();
       };
-    }, []);
+    }, [auth, user]); //pass auth and user since this deals with user authentication
       useEffect(() => {
           const fetchSavedRecipes = async () => {
               if (user){
@@ -36,7 +37,7 @@ const App = () =>{
                           setSavedRecipes([]);
                       }
                   } catch (error) {
-                      console.log("Error in fetching sasved recipes: ", error)
+                      console.log("Error in fetching saved recipes: ", error)
                   }
               } else {
                   setSavedRecipes([]);
@@ -50,8 +51,7 @@ const App = () =>{
               setSavedRecipes([]);
           }
           
-      }, [user]);
-
+      }, [user, auth, savedRecipes]);  //additionally pass savedRecipes since saved recipes are being fetched
     return (
 
       <div>
@@ -64,5 +64,5 @@ const App = () =>{
      
     );
   }
-
+//console.log(user, setUser)
 export default App;
