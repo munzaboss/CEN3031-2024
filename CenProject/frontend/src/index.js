@@ -76,3 +76,30 @@ const Index = () => {
 }
 //Index root component - rendering
 ReactDOM.createRoot(document.getElementById('root')).render(<Index />);
+// =======
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <App/>,
+//   }, 
+//   {
+//     path: "geoGuesser",
+//     element: <GeoGuesser/>
+//   },
+//   {
+//     path: 'login',
+//     element: <Login/>
+//   },
+//   {
+//     path:"myRecipes",
+//     element: <MyRecipes/>
+//   }
+  
+// ]);
+
+// const root = ReactDOM.createRoot(document.getElementById('root'));
+// root.render(
+//     <RouterProvider router={router} />
+// );
+
+// >>>>>>> main
