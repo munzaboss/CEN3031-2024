@@ -21,7 +21,7 @@ const MyRecipes = ({user, savedRecipes, setSavedRecipes, setUser}) => {
 
     return (
         <div>
-            <NavBar/>
+            <NavBar user={user} setUser={setUser}/>
         
             <div className="recipe-container">
                 {savedRecipes.map((obj, key) => {
