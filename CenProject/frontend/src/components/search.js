@@ -99,8 +99,8 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
                 console.log("resLinks: ", resLinks)
                 //give obj any parametesr here. If user choses to save, these parameters will be saved
                 obj.links = resLinks.spoonacularSourceUrl
-                obj.summary = resLinks.summary
-                obj.instructions = resLinks.instructions
+                obj.summary = resLinks.summary.replace(/<\/?[^>]+(>|$)/g, "")
+                obj.instructions = resLinks.instructions.replace(/<\/?[^>]+(>|$)/g, "")
 
                 //required for saving function. uses idx index card to know which recipe to save.
                 obj.idx = idx

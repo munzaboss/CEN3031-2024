@@ -5,6 +5,7 @@ import car2 from "../images/img-2.jpeg"
 import car3 from "../images/img-3.jpeg"
 import car4 from "../images/img-4.jpeg"
 import car5 from "../images/img-5.jpeg"
+import axios from 'axios'
 
 import {useState} from 'react'
 
@@ -16,6 +17,24 @@ const UserRecipeCard = (props) => {
 
     const handleDeleteClick = () => {
         props.onDelete(props.recipeID);
+    }
+    
+    const handleConfirm = async () => {
+        setEditable(false)
+
+
+        const newRecipe = {
+            userID: props.USER.uid,
+            recipeID: props.recipeID, 
+            recipeTitle: title, 
+            recipeImage: props.url, 
+            recipeLink: props.URL,
+            summary: summary, 
+            instructions: instructions
+        }
+
+        await axios.post(`http://localhost:8000/deleteRecipe`, { recipeID: props.recipeID, userID: props.USER.uid });
+        await axios.post(`http://localhost:8000/saveRecipeTest`, newRecipe)
     }
 
     return(
@@ -34,7 +53,7 @@ const UserRecipeCard = (props) => {
                                     <input value={title} onChange={(e) => setTitle(e.target.value)} style={{width: "500px"}}></input>
                                 </div>
                                 <div className="d-flex justify-content-center" style={{width: "100%"}}> 
-                                    <button onClick={() => setEditable(false)}className="btn btn-danger" style={{height: "45px", width: "100px", marginTop: "4px"}}>Confirm?</button>
+                                    <button onClick={handleConfirm} className="btn btn-danger" style={{height: "45px", width: "100px", marginTop: "4px"}}>Confirm?</button>
                                 </div>
                             </div>
                         </div>
@@ -69,11 +88,11 @@ const UserRecipeCard = (props) => {
                             <div className="d-flex flex-column align-items-start mt-5 gap-3">
                                 <div style={{maxHeight: "250px", minHeight: "250px", marginLeft: "8px", paddingRight: "5px", overflow: "scroll"}}>
                                     <h4>Instructions</h4>
-                                    <p className="" __html>{instructions}</p>
+                                    <p className="">{instructions}</p>
                                 </div>
                                 <div style={{maxHeight: "250px", marginLeft: "8px", paddingRight: "5px", overflow: "scroll"}}>
                                     <h4>Summary</h4>
-                                    <p className="" __html>{summary}</p>
+                                    <p className="">{summary}</p>
                                 </div>
                             </div>
                         </div>                       

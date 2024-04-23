@@ -23,9 +23,9 @@ app.get('/checkUser', async (req,res) => {
     
 })
 
-
 app.post('/saveRecipeTest', (req, res) => {
     const { userID, recipeID, recipeTitle, recipeImage, recipeLink, summary, instructions } = req.body
+    console.log(userID, recipeID, recipeTitle, recipeImage, recipeLink, summary, instructions)
     DBsaveRecipe(userID, recipeID, recipeTitle, recipeImage, recipeLink, summary, instructions);
     res.send('Recipe Saved');
 });

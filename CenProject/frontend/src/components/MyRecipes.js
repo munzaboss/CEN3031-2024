@@ -41,7 +41,7 @@ const MyRecipes = ({user, savedRecipes, setSavedRecipes, setUser}) => {
             <div className="recipe-container">
                 {savedRecipes.map((obj, key) => {
                     return (
-                        <UserRecipeCard key={key} onDelete = {handleDeleteRecipe} recipeID = {obj.recipeID} title={obj.recipeTitle} URL={obj.recipeLink} instructions={obj.instructions} summary={obj.summary} url={obj.recipeImage}/>
+                        <UserRecipeCard key={key} onDelete = {handleDeleteRecipe} recipeID = {obj.recipeID} title={obj.recipeTitle} URL={obj.recipeLink} instructions={obj.instructions} summary={obj.summary} url={obj.recipeImage} USER={user}/>
                     )
                 })}
             </div>
