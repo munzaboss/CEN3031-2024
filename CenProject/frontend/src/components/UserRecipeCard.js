@@ -14,6 +14,10 @@ const UserRecipeCard = (props) => {
     const [summary, setSummary] = useState(props.summary)
     const [title, setTitle] = useState(props.title)
 
+    const handleDeleteClick = () => {
+        props.onDelete(props.recipeID);
+    }
+
     return(
         <div className={`recipe-child d-flex flex-row border border-black ${editable ? 'border border-danger' : null}`}>
                 <div className="recipe-image w-50">
@@ -56,17 +60,20 @@ const UserRecipeCard = (props) => {
                                     <div className="d-flex justify-content-center" style={{width: "100%"}}> 
                                         <button onClick={() => setEditable(true)}className="btn btn-success" style={{height: "45px", width: "100px", marginTop: "4px"}}>Edit</button>
                                     </div>
+                                    <div className="d-flex justify-content-center" style={{width: "100%",}}> 
+                                        <button onClick={handleDeleteClick}className="btn btn-danger" style={{height: "45px", width: "100px", marginTop: "4px"}}>Delete</button>
+                                    </div>
                                 </div>
                             </div>
 
                             <div className="d-flex flex-column align-items-start mt-5 gap-3">
                                 <div style={{maxHeight: "250px", minHeight: "250px", marginLeft: "8px", paddingRight: "5px", overflow: "scroll"}}>
                                     <h4>Instructions</h4>
-                                    <p className="">{instructions}</p>
+                                    <p className="" __html>{instructions}</p>
                                 </div>
                                 <div style={{maxHeight: "250px", marginLeft: "8px", paddingRight: "5px", overflow: "scroll"}}>
                                     <h4>Summary</h4>
-                                    <p className="" dangerouslySetInnerHTML={{ __html: summary}}></p>
+                                    <p className="" __html>{summary}</p>
                                 </div>
                             </div>
                         </div>                       

@@ -18,6 +18,21 @@ const MyRecipes = ({user, savedRecipes, setSavedRecipes, setUser}) => {
 
     console.log(savedRecipes[0])
 
+    const handleDeleteRecipe = async (recipeID) => {
+        try {
+            // Backend call to delete recipe
+            await axios.post(`http://localhost:8000/deleteRecipe`, { recipeID: recipeID, userID: user.uid });
+            // Update saved recipes state after successful deletion
+            setSavedRecipes(savedRecipes.filter(recipe => recipe.recipeID !== recipeID));
+
+            console.log('Recipe deleted successfully');
+        } catch (error) {
+            console.error('Error deleting recipe:', error);
+        }
+
+        
+    }
+
 
     return (
         <div>
@@ -26,7 +41,7 @@ const MyRecipes = ({user, savedRecipes, setSavedRecipes, setUser}) => {
             <div className="recipe-container">
                 {savedRecipes.map((obj, key) => {
                     return (
-                        <UserRecipeCard key={key} title={obj.recipeTitle} URL={obj.recipeLink} instructions={obj.instructions} summary={obj.summary} url={obj.recipeImage}/>
+                        <UserRecipeCard key={key} onDelete = {handleDeleteRecipe} recipeID = {obj.recipeID} title={obj.recipeTitle} URL={obj.recipeLink} instructions={obj.instructions} summary={obj.summary} url={obj.recipeImage}/>
                     )
                 })}
             </div>
