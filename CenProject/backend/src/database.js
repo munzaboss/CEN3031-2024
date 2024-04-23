@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, get } from "firebase/database";
+import { getDatabase, ref, set, get, remove } from "firebase/database";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -82,7 +82,17 @@ async function DBisRecipeSaved(userID, recipeID){
   }
 }
 
-
+async function DBDeleteRecipe(userID, recipeID){
+  const db = getDatabase(firebaseApp);
+  const recipesRef = ref(db, `users/${userID}/recipes/${recipeID}`)
+  try {
+    await remove(recipesRef);
+    console.log(`Recipe ${recipeID} of user ${userID} has been removed.`)
+  } catch (error) {
+    console.error("Error in deleting recipe: ", error)
+  }
+  
+}
 async function DBgetSavedRecipes(userID){
   console.log('okay lets go')
   const db = getDatabase(firebaseApp);
@@ -105,4 +115,4 @@ async function DBgetSavedRecipes(userID){
     console.error("Error in getting saved recipes: ", error)
   }
 }
-export { DBcreateUser, DBsaveRecipe, DBcheckUser, DBisRecipeSaved, DBgetSavedRecipes };
+export { DBcreateUser, DBsaveRecipe, DBcheckUser, DBisRecipeSaved, DBgetSavedRecipes, DBDeleteRecipe };

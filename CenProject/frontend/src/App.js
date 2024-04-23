@@ -61,7 +61,7 @@ const App = ({user, setUser, savedRecipes, setSavedRecipes}) =>{
       <div>
         <NavBar user={user} setUser={setUser}/>
         <div className="App">
-          <SideBar savedRecipes = {savedRecipes}/> 
+          <SideBar savedRecipes = {savedRecipes} setSavedRecipes = {setSavedRecipes} user = {user}/> 
           <Search savedRecipes = {savedRecipes} setSavedRecipes={setSavedRecipes} user = {user} setUser = {setUser}/>
         </div> 
       </div>

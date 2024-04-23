@@ -11,7 +11,8 @@ cursor: pointer;
 }
 
 .card-img{ 
-    min-height: 100%;
+    height: 100%;
+    min-width: 40%;
 }
 
 .card-text-container{
@@ -31,11 +32,30 @@ cursor: pointer;
 
 .card-text > * {
     text-align: left;
-    color: transparent; /* Make text transparent */
-    background-image: linear-gradient(to right, black, white); /* Adjust gradient colors */
-    -webkit-background-clip: text; /* Apply background-clip to text */
-    background-clip: text;
+    white-space: normal; 
 }
    
+.delete-button {
+    width: 10%;
+    height: 100%;
+    position:relative;
+    top: 0%;
+    right: 0%;
+    background-color: red;
+    color: white;
+    border: none;
+    opacity: 0; 
+    transition: opacity 0.3s ease; 
+    border-top-left-radius: 0; 
+    border-bottom-left-radius: 0; 
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px;
+}
 
-
+.card-container:hover .delete-button {
+    opacity: 1; /* Show delete button on hover */
+}
+.delete-icon {
+    width: 16px;
+    height: 16px;
+}

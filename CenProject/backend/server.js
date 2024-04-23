@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { DBcreateUser, DBsaveRecipe, DBcheckUser, DBisRecipeSaved, DBgetSavedRecipes } from './src/database.js'
+import { DBcreateUser, DBsaveRecipe, DBcheckUser, DBisRecipeSaved, DBgetSavedRecipes, DBDeleteRecipe } from './src/database.js'
 
 
 const app = express()
@@ -45,8 +45,15 @@ app.get('/getSavedRecipes', async (req, res) => {
     console.log("recipes array: ", recipesArray)
     res.send({recipes: recipesArray});
 })
+
+
+app.post('/deleteRecipe', async (req, res) => {
+    const { userID, recipeID } = req.body;
+    await DBDeleteRecipe(userID, recipeID);
+    res.send("Recipe Deleted");
+})
 // app.post('/saveTestRecipe', (req, res) => {
-    
+
 
 // });
 
