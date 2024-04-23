@@ -21,11 +21,9 @@ const UserRecipeCard = (props) => {
     
     const handleConfirm = async () => {
         setEditable(false)
-
-
         const newRecipe = {
             userID: props.USER.uid,
-            recipeID: props.recipeID, 
+            recipeID: props.recipeID, //6 digits 
             recipeTitle: title, 
             recipeImage: props.url, 
             recipeLink: props.URL,
@@ -40,7 +38,9 @@ const UserRecipeCard = (props) => {
     return(
         <div className={`recipe-child d-flex flex-row border border-black ${editable ? 'border border-danger' : null}`}>
                 <div className="recipe-image w-50">
-                    <img className="w-100 h-100 recipe-img" src={props.url}></img>
+                    <a href={props.recipeLink} target="_blank">
+                        <img className="w-100 h-100 recipe-img" src={props.url} alt={car1}></img>
+                    </a>
                 </div>
 
                 <div className="recipe-info d-flex flex-column w-100">
@@ -98,6 +98,7 @@ const UserRecipeCard = (props) => {
                         </div>                       
                     )}
                 </div>
+
             </div>
     )
 }
