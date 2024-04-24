@@ -12,6 +12,7 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
 
     const auth = getAuth();
     const KEY = process.env.REACT_APP_API_KEY
+    console.log(KEY)
 
     //first two handle search bar 
     const [text, setText] = useState("")
@@ -88,8 +89,9 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
 
         try {
             //number is currently 2 for testing purposes
-            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=1`)
+            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=3`)
             const object = await data.json()
+            console.log("called once")
             console.log("Object: ", object);
 
             //tries to resolve all promises before continuing  
@@ -97,7 +99,8 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
                 const links = await fetch(`https://api.spoonacular.com/recipes/${obj.id}/information?apiKey=${KEY}&includeNutrition=false`)
                 const resLinks = await links.json()
                 console.log("resLinks: ", resLinks)
-                //give obj any parametesr here. If user choses to save, these parameters will be saved
+
+                // give obj any parameter here. If user choses to save, these parameters will be saved
                 obj.links = resLinks.spoonacularSourceUrl
                 obj.summary = resLinks.summary.replace(/<\/?[^>]+(>|$)/g, "")
                 obj.instructions = resLinks.instructions.replace(/<\/?[^>]+(>|$)/g, "")
