@@ -3,7 +3,6 @@ import SideBar from './components/sideBar';
 import NavBar from './components/NavBar'
 import './style/App.css'
 import 'bootstrap/dist/css/bootstrap.css'
-import { getAuth } from 'firebase/auth'
 
 //take in props from index.js
 const App = ({user, setUser, savedRecipes, setSavedRecipes}) =>{

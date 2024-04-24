@@ -1,6 +1,5 @@
 import "../style/Search.css"
-import {useState, useEffect} from "react"
-import {Link} from 'react-router-dom'
+import {useState} from "react"
 import FoodCard from "./FoodCard.js"
 import Accordion from 'react-bootstrap/Accordion';
 import { getAuth } from 'firebase/auth';

@@ -3,8 +3,7 @@ import "../style/MyRecipes.css"
 import UserRecipeCard from "./UserRecipeCard"
 import customImage from "../images/custom.png"
 import axios from 'axios'
-import { getAuth } from 'firebase/auth'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 
 
 
