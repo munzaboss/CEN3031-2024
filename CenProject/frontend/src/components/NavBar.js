@@ -9,7 +9,7 @@ const NavBar = ({user, setUser}) => {
   
   const auth = getAuth();
 
-  //handles logout using firebase signout funciton
+  //handles logout using firebase sign out function
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -45,9 +45,6 @@ const NavBar = ({user, setUser}) => {
           <span><Link to="/login" className="nav-link-style">Login</Link></span>
         )}
       </div>
-
-
-
     </div>
   );
 }

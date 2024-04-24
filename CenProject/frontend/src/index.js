@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './style/index.css';
 import App from './App';
 import GeoGuesser from './components/GeoGuesser';
 import MyRecipes from './components/MyRecipes';
@@ -25,10 +25,12 @@ function Wrapper({children, user, setUser, savedRecipes, setSavedRecipes}){
 const Index = () => {
   const [user, setUser] = useState(null);  //changes during the login process
   const [savedRecipes, setSavedRecipes] = useState([]); //redeclared in index.js (parent class) to effectively pass down to child
-  //Wrapper component used to wrap all propps and pass them to the child components 
+  //Wrapper component used to wrap all props and pass them to the child components 
 
+
+  //the two use effects handle getting the user's saved recipes 
+  //We then store the recipes in the savedRecipes array and pass it into certain pages as props
   const auth = getAuth();
-
   useEffect(() => {
     console.log('Current user on page load:', user)
     const auth = getAuth();
@@ -79,7 +81,7 @@ const Index = () => {
       element: (
         <Wrapper
           user={user}
-          setUser = {setUser}   //set after the login process - i think thats why it is yellow? same with setSavedRecipes?
+          setUser = {setUser} 
           savedRecipes = {savedRecipes}
           setSavedRecipes = {setSavedRecipes}> 
             <App />
@@ -129,30 +131,3 @@ const Index = () => {
 }
 //Index root component - rendering
 ReactDOM.createRoot(document.getElementById('root')).render(<Index />);
-// =======
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <App/>,
-//   }, 
-//   {
-//     path: "geoGuesser",
-//     element: <GeoGuesser/>
-//   },
-//   {
-//     path: 'login',
-//     element: <Login/>
-//   },
-//   {
-//     path:"myRecipes",
-//     element: <MyRecipes/>
-//   }
-  
-// ]);
-
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(
-//     <RouterProvider router={router} />
-// );
-
-// >>>>>>> main

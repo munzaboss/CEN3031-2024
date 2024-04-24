@@ -1,12 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import "../style/UserRecipeCard.css"
-import car1 from "../images/img-1.jpeg"
-import car2 from "../images/img-2.jpeg"
-import car3 from "../images/img-3.jpeg"
-import car4 from "../images/img-4.jpeg"
-import car5 from "../images/img-5.jpeg"
 import axios from 'axios'
-
 import {useState} from 'react'
 
 const UserRecipeCard = (props) => {
@@ -19,11 +13,12 @@ const UserRecipeCard = (props) => {
         props.onDelete(props.recipeID);
     }
     
+    //updates the database after user edits a recipe
     const handleConfirm = async () => {
         setEditable(false)
         const newRecipe = {
             userID: props.USER.uid,
-            recipeID: props.recipeID, //6 digits 
+            recipeID: props.recipeID,
             recipeTitle: title, 
             recipeImage: props.url, 
             recipeLink: props.URL,
@@ -37,14 +32,16 @@ const UserRecipeCard = (props) => {
 
     return(
         <div className={`recipe-child d-flex flex-row border border-black ${editable ? 'border border-danger' : null}`}>
+
                 <div className="recipe-image w-50">
                     <a href={props.recipeLink} target="_blank">
-                        <img className="w-100 h-100 recipe-img" src={props.url} alt={car1}></img>
+                        <img className="w-100 h-100 recipe-img" src={props.url}></img>
                     </a>
                 </div>
 
                 <div className="recipe-info d-flex flex-column w-100">
 
+                    {/* shows different cards if user is editing or not */}
                     {editable ? (
                         <div>
                         <div className="d-flex justify-content-center mt-0">

@@ -227,10 +227,7 @@ const GeoGuesser = ({user}) => {
               }} />
           ))
         ) : null}     
-          
- 
         
-
         {/* shows the answer after submit  */}
         {revealAnswer ? <Marker position={answerCoordinates} icon="http://maps.google.com/mapfiles/ms/icons/green-dot.png"/> : null}
         

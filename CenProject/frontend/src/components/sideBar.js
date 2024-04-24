@@ -4,11 +4,13 @@ import UserRecipesOnSearch from "./userRecipesOnSearch"
 import axios from 'axios'
 
 const SideBar = ({savedRecipes, setSavedRecipes, user}) => {
+    
     //condition to fix a map() error -> recommended by ChatGPT
     if (!savedRecipes || !Array.isArray(savedRecipes)){
         return <div>No saved recipes found</div>
     }
 
+    //handles delete recipes on sidebar
     const handleDeleteRecipe = async (recipeID) => {
         try {
             // Backend call to delete recipe
@@ -31,6 +33,7 @@ const SideBar = ({savedRecipes, setSavedRecipes, user}) => {
                 Saved Recipes
             </h3>
 
+            {/* displays saved recipes  */}
             {savedRecipes.map((recipe) => {
                 return(
                     <UserRecipesOnSearch
@@ -42,7 +45,6 @@ const SideBar = ({savedRecipes, setSavedRecipes, user}) => {
                     />
                 )
             })}
-
         </div>
     )
 }

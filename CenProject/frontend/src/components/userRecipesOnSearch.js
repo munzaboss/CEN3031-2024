@@ -10,7 +10,7 @@ const UserRecipeOnSearch = (props) => {
     const handleDeleteClick = () => {
         props.onDelete(props.recipeID);
     }
-
+    
     return (
         <div className="card-container">
                 <img className="card-img" src={props.recipeImage} onClick={handleClick}></img>

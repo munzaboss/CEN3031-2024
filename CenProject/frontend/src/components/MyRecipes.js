@@ -1,11 +1,7 @@
 import NavBar from "./NavBar"
 import "../style/MyRecipes.css"
 import UserRecipeCard from "./UserRecipeCard"
-import car1 from "../images/custom.png"
-import car2 from "../images/img-2.jpeg"
-import car3 from "../images/img-3.jpeg"
-import car4 from "../images/img-4.jpeg"
-import car5 from "../images/img-5.jpeg"
+import customImage from "../images/custom.png"
 import axios from 'axios'
 import { getAuth } from 'firebase/auth'
 import {useState, useEffect} from 'react'
@@ -13,19 +9,15 @@ import {useState, useEffect} from 'react'
 
 
 const MyRecipes = ({user, savedRecipes, setSavedRecipes, setUser}) => {
-    const IMAGES = [car1, car2, car3, car4, car5]
-    const [text, setText] = useState("")
+
     const [displayAddCard, setDisplayAddCard] = useState(false)
     const [customTitle, setCustomTitle] = useState("")
-    const [customLink, setCustomLink] = useState("")
     const [customInstructions, setCustomInstructions] = useState("")
     const [customSummary, setCustomSummary] = useState("")
 
-    console.log(savedRecipes)
 
 
-    console.log(savedRecipes[0])
-
+    //for delete button 
     const handleDeleteRecipe = async (recipeID) => {
         try {
             // Backend call to delete recipe
@@ -33,28 +25,30 @@ const MyRecipes = ({user, savedRecipes, setSavedRecipes, setUser}) => {
             // Update saved recipes state after successful deletion
             setSavedRecipes(savedRecipes.filter(recipe => recipe.recipeID !== recipeID));
 
-            console.log('Recipe deleted successfully');
         } catch (error) {
             console.error('Error deleting recipe:', error);
         }
     }
 
+    //for adding new custom recipe 
     const handleNewCustomRecipe = async () => {
 
         const newRecipe = {
             userID: user.uid,
             recipeID: Math.floor(100000 + Math.random() * 900000), 
             recipeTitle: customTitle, 
-            recipeImage: car1, 
+            recipeImage: customImage, 
             recipeLink: null,
             summary: customSummary, 
             instructions: customInstructions
         }
 
         await axios.post(`http://localhost:8000/saveRecipeTest`, newRecipe)
+        //refresh page to show update recipes 
         window.location.reload()
     }
 
+    //toggle for the "Add New Recipe" button 
     const toggleAddNewRecipeButton = () => {
         if (displayAddCard) {
             setDisplayAddCard(false)
@@ -75,7 +69,7 @@ const MyRecipes = ({user, savedRecipes, setSavedRecipes, setUser}) => {
         
             <div className="recipe-container">
 
-
+                {/* only show if the user clicks the "Add New Recipe Button" */}
                 {displayAddCard ? (
                     <div className={`custom-recipe-child d-flex flex-column border border-black justify-content-center align-items-center gap-2`} style={{padding: "0rem 2rem"}}> 
                         <div className="d-flex flex-row gap-5"> 
@@ -95,16 +89,15 @@ const MyRecipes = ({user, savedRecipes, setSavedRecipes, setUser}) => {
 
                 ) : null}
 
-
+                
+                {/* maps the actual saved recipes  */}
                 {savedRecipes.map((obj, key) => {
                     return (
-            <UserRecipeCard key={key} onDelete = {handleDeleteRecipe} recipeID = {obj.recipeID} title={obj.recipeTitle} URL={obj.recipeLink} instructions={obj.instructions} summary={obj.summary} url={obj.recipeImage} USER={user} recipeLink={obj.recipeLink}/>
+                        <UserRecipeCard key={key} onDelete = {handleDeleteRecipe} recipeID = {obj.recipeID} title={obj.recipeTitle} URL={obj.recipeLink} instructions={obj.instructions} summary={obj.summary} url={obj.recipeImage} USER={user} recipeLink={obj.recipeLink}/>
                     )
                 })}
 
-
             </div>
-           
         </div>
     )
 }
