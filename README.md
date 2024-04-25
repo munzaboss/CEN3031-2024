@@ -2,14 +2,14 @@ To download this using git, create a folder where you want to store this reposit
 
 ```bash
 git clone <link to this repositiory>
-```bash
+```
 
 To run this open two terminals.
 On first the terminal run these commands
 
 
 ```bash
-cd CenProject/backend
+cd CEN3031-2024/CenProject/backend
 npm i
 npm start
 ```
@@ -17,7 +17,7 @@ npm start
 On the second terminal
 
 ```bash
-cd CenProject/frontend
+cd CEN3031-2024/CenProject/frontend
 npm i
 npm start
 ```
