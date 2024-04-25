@@ -1,6 +1,5 @@
 import "../style/Search.css"
-import {useState, useEffect} from "react"
-import {Link} from 'react-router-dom'
+import {useState} from "react"
 import FoodCard from "./FoodCard.js"
 import Accordion from 'react-bootstrap/Accordion';
 import { getAuth } from 'firebase/auth';
@@ -13,22 +12,22 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
 
     const auth = getAuth();
     const KEY = process.env.REACT_APP_API_KEY
+    console.log(KEY)
+
+    //first two handle search bar 
     const [text, setText] = useState("")
     const [checked, setChecked] = useState([])
+    //handles the food cards from search bar
     const [cards, setCards] = useState([])
-    //states that deal with saving of recipes
+
+    //for "save" button on food cards
     const saveRecipe = async (SelectedRecipe) => {
-        console.log(SelectedRecipe.id);
-        console.log(SelectedRecipe.idx);
-        // console.log(savedRecipes);
-        // setSavedRecipes((prevRecipes) => [...prevRecipes, recipe]);
-        // console.log(savedRecipes)
+
+        //gets recipe user is trying to save
         const recipe = cards[SelectedRecipe.idx]
-        console.log("Recipe: ", recipe)
-        console.log('RecipeID: ', recipe.id)
 
         try {
-            console.log(auth.currentUser)
+            //stores recipe information onto database
             const response = await axios.post('http://localhost:8000/saveRecipeTest', {
                 userID: auth.currentUser.uid,
                 recipeID: recipe.id,
@@ -38,7 +37,7 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
                 summary: recipe.summary,
                 instructions: recipe.instructions
             });
-            console.log(response);
+
             if (response.status === 200) {
                 console.log('Recipe saved successfully.');
 
@@ -62,8 +61,9 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
         }
     };
 
-    /*handles clicks for the check box*/
+    //handles clicks for the check box
     const handleCheckBox = (e) => {
+        //checks the box / unchecks the box
         if (e.target.checked) {
             setChecked([...checked, e.target.value])
         } else {
@@ -71,7 +71,7 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
         }
     }
 
-    /*fetches the API data*/ 
+    //forms query for spoonacular API call 
     const formQuery = (string) => {
         let query = encodeURIComponent(string.replaceAll(" ", "+")); //encodeURIComponent - special characters in a query string are correctly encoded for using in an URL
         if (checked.length > 0)  {
@@ -82,25 +82,28 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
         return query;
     }
 
-    /*fetches the API data*/ 
+    //etches the API data
     const fetchData = async () => {
+
         const query = formQuery(text)
-        console.log("Query: ", query)
 
         try {
             //number is currently 2 for testing purposes
-            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=1`)
+            const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&query=${query}&number=3`)
             const object = await data.json()
+            console.log("called once")
             console.log("Object: ", object);
 
+            //tries to resolve all promises before continuing  
             await Promise.all(object.results.map(async(obj, idx) => {
                 const links = await fetch(`https://api.spoonacular.com/recipes/${obj.id}/information?apiKey=${KEY}&includeNutrition=false`)
                 const resLinks = await links.json()
                 console.log("resLinks: ", resLinks)
-                //give obj any parametesr here. If user choses to save, these parameters will be saved
+
+                // give obj any parameter here. If user choses to save, these parameters will be saved
                 obj.links = resLinks.spoonacularSourceUrl
-                obj.summary = resLinks.summary
-                obj.instructions = resLinks.instructions
+                obj.summary = resLinks.summary.replace(/<\/?[^>]+(>|$)/g, "")
+                obj.instructions = resLinks.instructions.replace(/<\/?[^>]+(>|$)/g, "")
 
                 //required for saving function. uses idx index card to know which recipe to save.
                 obj.idx = idx
@@ -118,8 +121,8 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
                 return obj
             }))
             
-            console.log(object.results)
             setCards(object.results)
+
           } catch (error) {
             console.log(error)
           }
@@ -166,11 +169,6 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
                                 <tr><input type="checkbox" value="&maxFat=25" onChange={handleCheckBox}/> Fat Free</tr>
                                 <tr><input type="checkbox" value="&maxCarb=25" onChange={handleCheckBox}/> Low Carbs</tr>
                                 <tr><input type="checkbox" value="&diet=vegetarian" onChange={handleCheckBox}/> Vegetarian</tr>
-                                {/* <tr><input type="checkbox" value="&maxIngredients=25" onChange={handleCheckBox}/> Most Ingredients Used</tr> */}
-                                {/* <tr><input type="checkbox" value="&hasAllergens=25" onChange={handleCheckBox}/> Has Common Allergens</tr> */}
-                                {/* <tr><input type="checkbox" value="&leastCookTime=25" onChange={handleCheckBox}/> Least Cooking Time</tr> */}
-                                {/* <tr><input type="checkbox" value="&leastPrepTime=25" onChange={handleCheckBox}/> Least Preparation Time</tr> */}
-                                {/* <tr><input type="checkbox" value="&typeOfCuisine=25" onChange={handleCheckBox}/> Type of Cuisine</tr> */}
                             </tb>
                             </table>
 
@@ -179,8 +177,6 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
                 </Accordion>
                 
             </div>  
-
-
 
             {/*displays the cards*/}
             <div className="cardsContainer">
@@ -194,6 +190,6 @@ const Search = ({savedRecipes, setSavedRecipes, user, setUser}) => {
 
     )
 }
-//<SideBar savedRecipes={savedRecipes}/> - rendering of savedRecipes component 
+            
 export default Search
 

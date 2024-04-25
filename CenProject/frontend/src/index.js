@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './style/index.css';
 import App from './App';
 import GeoGuesser from './components/GeoGuesser';
 import MyRecipes from './components/MyRecipes';
@@ -9,7 +9,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Login from './components/Login';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import axios from 'axios'
+import { getAuth } from 'firebase/auth'
+
+
 
 //Wrapper function to wrap the App component and pass props from App to the child components 
 function Wrapper({children, user, setUser, savedRecipes, setSavedRecipes}){
@@ -21,14 +25,63 @@ function Wrapper({children, user, setUser, savedRecipes, setSavedRecipes}){
 const Index = () => {
   const [user, setUser] = useState(null);  //changes during the login process
   const [savedRecipes, setSavedRecipes] = useState([]); //redeclared in index.js (parent class) to effectively pass down to child
-  //Wrapper component used to wrap all propps and pass them to the child components 
+  //Wrapper component used to wrap all props and pass them to the child components 
+
+
+  //the two use effects handle getting the user's saved recipes 
+  //We then store the recipes in the savedRecipes array and pass it into certain pages as props
+  const auth = getAuth();
+  useEffect(() => {
+    console.log('Current user on page load:', user)
+    const auth = getAuth();
+    const change = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    }); 
+    return () => {
+      change();
+    };
+  }, [auth, user]); //pass auth and user since this deals with user authentication
+
+
+    useEffect(() => {
+        const fetchSavedRecipes = async () => {
+            if (user){
+                try {
+                    console.log(auth.currentUser.uid)
+                    const response = await axios.get(`http://localhost:8000/getSavedRecipes?userID=${auth.currentUser.uid}`);
+                    if (response.data && response.data.recipes) {
+                        setSavedRecipes(response.data.recipes);
+                    } else {
+                        setSavedRecipes([]);
+                    }
+                } catch (error) {
+                    console.log("Error in fetching saved recipes: ", error)
+                }
+            } else {
+                setSavedRecipes([]);
+            }
+
+        };
+
+        if (user) {
+            fetchSavedRecipes();
+        } else {
+            console.log('user is null')
+            setSavedRecipes([]);
+        }
+        
+    }, [user, auth]); 
+
+
+
+  
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
         <Wrapper
           user={user}
-          setUser = {setUser}   //set after the login process - i think thats why it is yellow? same with setSavedRecipes?
+          setUser = {setUser} 
           savedRecipes = {savedRecipes}
           setSavedRecipes = {setSavedRecipes}> 
             <App />
@@ -59,8 +112,10 @@ const Index = () => {
       path:"myRecipes",
       element: (
       <Wrapper 
+        setUser = {setUser}  
         user={user}
-        savedRecipes={savedRecipes}>
+        savedRecipes={savedRecipes}
+        setSavedRecipes = {setSavedRecipes}> 
           <MyRecipes />
         </Wrapper> //MyRecipes.js needs access to the user and savedRecipes props when viewing recipes that are saved
       ),
@@ -76,30 +131,3 @@ const Index = () => {
 }
 //Index root component - rendering
 ReactDOM.createRoot(document.getElementById('root')).render(<Index />);
-// =======
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <App/>,
-//   }, 
-//   {
-//     path: "geoGuesser",
-//     element: <GeoGuesser/>
-//   },
-//   {
-//     path: 'login',
-//     element: <Login/>
-//   },
-//   {
-//     path:"myRecipes",
-//     element: <MyRecipes/>
-//   }
-  
-// ]);
-
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(
-//     <RouterProvider router={router} />
-// );
-
-// >>>>>>> main

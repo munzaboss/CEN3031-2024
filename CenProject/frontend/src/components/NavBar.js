@@ -1,15 +1,14 @@
 import "../style/NavBar.css"
-import {Link, useSearchParams} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import logo from "../images/logo.ico"
 import { getAuth, signOut } from "firebase/auth"
-import { useState, useEffect } from "react"
 
 
 const NavBar = ({user, setUser}) => {
   
   const auth = getAuth();
 
-  //handles logout using firebase signout funciton
+  //handles logout using firebase sign out function
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -45,9 +44,6 @@ const NavBar = ({user, setUser}) => {
           <span><Link to="/login" className="nav-link-style">Login</Link></span>
         )}
       </div>
-
-
-
     </div>
   );
 }

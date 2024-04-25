@@ -1,10 +1,9 @@
-
-//import { useEffect } from 'react';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import axios from 'axios';
 import { initializeApp } from "firebase/app";
 import { useNavigate } from 'react-router-dom';
 import '../style/Login.css'; // Make sure this path is correct to include your styles
+import {useEffect} from 'react'
 import googlelogo from '../images/google.png';
 
 const firebaseConfig = {
@@ -23,13 +22,13 @@ const auth = getAuth(firebaseApp);
 function Login() {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   auth.onAuthStateChanged(user => {
-  //     if (user) {
-  //       navigate("/"); // Redirect to home if already logged in
-  //     }
-  //   });
-  // }, [navigate]);
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        navigate("/"); // Redirect to home if already logged in
+      }
+    });
+  }, [navigate]);
 
   const handleLogin = async () => {
       console.log("logging in");

@@ -2,6 +2,7 @@ import React from 'react';
 import "../style/GeoGuesser.css"
 import NavBar from "./NavBar"
 import { useState, useEffect } from 'react';
+import axios from 'axios'
 import { GoogleMap, useLoadScript, Marker, Polyline } from '@react-google-maps/api';
 
 // api keys and basic set up variables
@@ -49,13 +50,15 @@ const CUISINES = [
   ["vietnamese", "vietnam"]
 ]
 
-const GeoGuesser = () => {
+const GeoGuesser = ({user}) => {
 
   //set up state variables 
   const [answerCoordinates, setAnswerCoordinates] = useState([{lat: 37.090240,lng: -95.712891 }])
   const [recipeTitle, setRecipeTitle] = useState("")
-  const [recipeDescription, setRecipeDescription] = useState("")
+  const [recipeSummary, setRecipeSummary] = useState("")
   const [recipeImage, setRecipeImage] = useState("")
+  const [recipeLink, setRecipeLink] = useState("")
+  const [recipeInstructions, setRecipeInstructions] = useState("")
   const [marker, setMarker] = useState([])
   const [path, setPath] = useState([])
   const [revealAnswer, setAnswer] = useState(false)
@@ -84,10 +87,13 @@ const GeoGuesser = () => {
 
     //try to set data from all API calls 
     try {
+      console.log(results)
       // sets the basic recipe information 
       setRecipeTitle(results.recipes[0].title)
-      setRecipeDescription(results.recipes[0].summary)
+      setRecipeSummary(results.recipes[0].summary.replace(/<\/?[^>]+(>|$)/g, ""))
       setRecipeImage(results.recipes[0].image)
+      setRecipeLink(results.recipes[0].spoonacularSourceUrl)
+      setRecipeInstructions(results.recipes[0].instructions.replace(/<\/?[^>]+(>|$)/g, ""))
 
       //gets the lat and lng of the origin 
       const originData = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${origin[1]}&key=${KEY}`)
@@ -132,6 +138,26 @@ const GeoGuesser = () => {
     )
   }
 
+  const handleSave = async () => {
+
+    if (!error) {
+
+      const newRecipe = {
+        userID: user.uid,
+        recipeID: Math.floor(100000 + Math.random() * 900000), 
+        recipeTitle: recipeTitle, 
+        recipeImage: recipeImage, 
+        recipeLink: recipeLink,
+        summary: recipeSummary, 
+        instructions: recipeInstructions
+      }
+  
+      await axios.post(`http://localhost:8000/saveRecipeTest`, newRecipe)
+
+    }
+    
+  }
+
   //catches errors for the google maps 
   if (loadError) {
     return <div>Error loading maps</div>;
@@ -154,7 +180,7 @@ const GeoGuesser = () => {
           <div className="mt-2 d-flex justify-content-around">
             <button className="btn btn-primary" onClick={getNewRecipe}>Get New Recipe</button>
             <button className="btn btn-danger" onClick={handleSubmit}>Submit Answer</button>
-            <button className="btn btn-success"> Save Recipe</button>
+            <button className="btn btn-success" onClick={handleSave}> Save Recipe</button>
           </div>
          
 
@@ -163,7 +189,7 @@ const GeoGuesser = () => {
               <div className="d-flex flex-column justify-content-center align-items-center position-relative">
                 <h3 className="mt-5 px-2 text-center">{recipeTitle}</h3>
                 <div style={{height: "320px", width:"100%"}} className="overflowY">
-                  <p className=" mt-5" dangerouslySetInnerHTML={{ __html: recipeDescription}}></p>
+                  <p className=" mt-5" dangerouslySetInnerHTML={{ __html: recipeSummary}}></p>
                 </div>
                 <img className="img-responsive mt-5 position-absolute bottom-0 top-100" src={recipeImage}></img>
             </div>
@@ -201,10 +227,7 @@ const GeoGuesser = () => {
               }} />
           ))
         ) : null}     
-          
- 
         
-
         {/* shows the answer after submit  */}
         {revealAnswer ? <Marker position={answerCoordinates} icon="http://maps.google.com/mapfiles/ms/icons/green-dot.png"/> : null}
         

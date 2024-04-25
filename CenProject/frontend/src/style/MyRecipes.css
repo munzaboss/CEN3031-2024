@@ -2,24 +2,31 @@
     display: flex;
     flex-direction: column;
     padding: 0rem 2rem;
-    background-color:aqua;
 }
 
 .recipe-child { 
-    height: 25rem;
+    height: 40em;
     width: 100%;
     margin-top: 3rem;
-    /* border: 2px solid black; */
     border-radius: 2%;
     transition: box-shadow 300ms ease-in-out;
-    background-color:aquamarine;
+}
+
+.custom-recipe-child {
+    height: 40em;
+    width: 100%;
+    margin-top: 3rem;
+    border-radius: 2%;
+    transition: box-shadow 300ms ease-in-out;
 }
 
 .recipe-img {
-    border-radius: 2%;
+    border-top-left-radius: 3%;
+    border-bottom-left-radius: 3%;
+
 }
 
-.recipe-child:hover {
+.recipe-child:hover, .custom-recipe-child:hover {
     box-shadow: 2px 2px 10px;
 }
 

@@ -4,10 +4,13 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import "../style/FoodCard.css"
 
+
 const FoodCard = ({id, idx, linkToPage, title, img, auth, saveRecipe, isRecipeSaved, savedRecipes, setSavedRecipes}) => {
   
+  //state to display if card is saved or not
   const [saved, setSaved] = useState(isRecipeSaved);
   
+  //when user clicks the "save" button on the food card
   const handleSave = () => {
     saveRecipe({id, idx});
     setSaved(true)
@@ -17,8 +20,6 @@ const FoodCard = ({id, idx, linkToPage, title, img, auth, saveRecipe, isRecipeSa
     // Update the local state when isRecipeSaved prop changes
     setSaved(isRecipeSaved);
   }, [id]);
-
-  //onClick to allow user clicking  
   
   return (
     <Card className="foodCard" style={{maxWidth: '18rem', maxHeight: "22rem", minHeight: "22rem", borderRadius: "20px"}}>
