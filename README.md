@@ -1,4 +1,10 @@
-To run this open to terminals.
+To download this using git, create a folder where you want to store this repository. Then run
+
+```bash
+git clone <link to this repositiory>
+```bash
+
+To run this open two terminals.
 On first the terminal run these commands
 
 
